@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en" data-gdt-fixture>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Google Docs True Dark Fixture</title>
+    <link rel="stylesheet" href="../src/docs-dark.css">
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font: 14px/1.4 Arial, sans-serif;
+        background: #f8fafd;
+        color: #202124;
+      }
+
+      .docs-titlebar,
+      .docs-menubar,
+      .docs-toolbar-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        height: 42px;
+        padding: 0 18px;
+        border-bottom: 1px solid #dadce0;
+        background: #fff;
+      }
+
+      .docs-titlebar {
+        justify-content: space-between;
+      }
+
+      .fixture-titlebar-main,
+      .fixture-titlebar-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .docs-title-input {
+        width: 270px;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        padding: 6px 8px;
+        font-size: 18px;
+      }
+
+      .goog-toolbar-button,
+      .jfk-button,
+      .goog-flat-menu-button {
+        border: 1px solid #dadce0;
+        border-radius: 4px;
+        padding: 6px 10px;
+        background: #fff;
+      }
+
+      .workspace {
+        display: grid;
+        grid-template-columns: 1fr 320px;
+        gap: 24px;
+        min-height: calc(100vh - 126px);
+        padding: 28px 36px;
+      }
+
+      .kix-page {
+        width: min(820px, 100%);
+        min-height: 920px;
+        margin: 0 auto;
+        padding: 72px;
+        background: #fff;
+        box-shadow: 0 2px 9px rgba(60, 64, 67, 0.3);
+      }
+
+      .doc-line {
+        margin: 0 0 18px;
+      }
+
+      .photo-row {
+        display: flex;
+        gap: 18px;
+        align-items: center;
+        margin: 28px 0;
+      }
+
+      .photo-row img {
+        width: 180px;
+        height: 120px;
+        object-fit: cover;
+        border-radius: 4px;
+      }
+
+      .chart {
+        width: 180px;
+        height: 120px;
+        background: linear-gradient(135deg, #4285f4 0 30%, #34a853 30% 58%, #fbbc04 58% 77%, #ea4335 77%);
+        border-radius: 4px;
+      }
+
+      .docos-sidebar {
+        padding: 14px;
+        background: #fff;
+        border-left: 1px solid #dadce0;
+      }
+
+      .docos-docoview,
+      .docs-revisions-tile,
+      .goog-menu {
+        margin-bottom: 16px;
+        padding: 14px;
+        border: 1px solid #dadce0;
+        border-radius: 8px;
+        background: #fff;
+      }
+
+      .docos-input-textarea {
+        width: 100%;
+        min-height: 64px;
+        padding: 8px;
+        border: 1px solid #dadce0;
+      }
+
+      .goog-menu {
+        position: fixed;
+        left: 170px;
+        top: 95px;
+        width: 220px;
+      }
+
+      .goog-menuitem {
+        padding: 7px 8px;
+      }
+    </style>
+  </head>
+  <body class="docs-gm">
+    <div id="docs-chrome">
+      <div class="docs-titlebar">
+        <div class="fixture-titlebar-main">
+          <input class="docs-title-input" value="Quarterly Review Draft">
+          <button class="docs-titlebar-badge" aria-label="Star">Star</button>
+          <button class="docs-titlebar-badge" aria-label="Document status">Cloud</button>
+        </div>
+        <div class="fixture-titlebar-actions">
+          <button class="docs-gm3-icon-button" aria-label="Version history">History</button>
+          <button class="docs-gm3-icon-button" data-tooltip="Open comment history">Comments</button>
+          <button class="docs-gm3-menu-button" aria-label="Start a video call">Meet <span class="fixture-caret">v</span></button>
+          <button class="jfk-button jfk-button-action share-client-button" aria-label="Share">Share <span class="fixture-caret">v</span></button>
+        </div>
+      </div>
+      <div class="docs-menubar">
+        <span class="goog-control">File</span>
+        <span class="goog-control">Edit</span>
+        <span class="goog-control">View</span>
+        <span class="goog-control">Insert</span>
+        <span class="goog-control">Tools</span>
+      </div>
+      <div class="docs-toolbar-wrapper">
+        <button class="goog-toolbar-button"><span class="docs-icon-img">B</span></button>
+        <button class="goog-toolbar-button"><span class="docs-icon-img">I</span></button>
+        <button class="goog-flat-menu-button">Normal text</button>
+      </div>
+    </div>
+
+    <div class="goog-menu">
+      <div class="goog-menuitem goog-menuitem-highlight">Smart chips</div>
+      <div class="goog-menuitem">Image</div>
+      <div class="goog-menuitem">Table</div>
+    </div>
+
+    <main class="workspace">
+      <section id="docs-editor" class="kix-appview-editor">
+        <article class="kix-page" style="background-color: #ffffff; color: #202124;">
+          <p class="doc-line" style="color: #202124;">This is ordinary black document text. It should become readable on a dark page.</p>
+          <p class="doc-line" style="color: #1155cc;">This blue link-like text should keep its hue while getting lighter.</p>
+          <p class="doc-line" style="background-color: #fff2cc; color: #3c4043;">This pale yellow highlight should become a subdued dark highlight.</p>
+          <p class="doc-line" style="border-left: 4px solid #dadce0; padding-left: 12px;">Light borders should become dark-mode dividers.</p>
+          <div class="photo-row">
+            <img alt="fixture photo" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='240'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='1' y1='0' y2='1'%3E%3Cstop stop-color='%23ff6b6b'/%3E%3Cstop offset='1' stop-color='%234ecdc4'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g)' width='360' height='240'/%3E%3Ccircle fill='%23ffe66d' cx='252' cy='76' r='42'/%3E%3Cpath fill='%232d3047' d='M0 185h360v55H0z'/%3E%3C/svg%3E">
+            <div class="chart"></div>
+          </div>
+          <canvas id="canvas-doc" width="620" height="160" style="width: 100%; height: 160px;"></canvas>
+        </article>
+      </section>
+
+      <aside class="docos-sidebar">
+        <div class="docos-docoview">
+          <strong class="docos-author" style="color: #202124;">Reviewer</strong>
+          <p class="docos-comment-text" style="color: #3c4043;">Comment cards, reply areas, and sidebars should match the document chrome.</p>
+          <textarea class="docos-input-textarea" placeholder="Reply"></textarea>
+        </div>
+        <div class="docs-revisions-sidebar">
+          <div class="docs-revisions-tile" style="background-color: #f1f3f4;">
+            <strong>Version history</strong>
+            <p style="color: #5f6368;">Today, 18:42</p>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <script src="../src/docs-canvas.js"></script>
+    <script src="../src/docs-dark.js"></script>
+    <script>
+      const canvas = document.getElementById("canvas-doc");
+      const context = canvas.getContext("2d");
+      context.fillStyle = "#ffffff";
+      context.fillRect(0, 0, canvas.width, canvas.height);
+      context.fillStyle = "#202124";
+      context.font = "24px Arial";
+      context.fillText("Canvas-rendered text should be light, not inverted.", 28, 56);
+      context.fillStyle = "#1155cc";
+      context.fillText("Blue canvas text keeps hue and gains contrast.", 28, 104);
+      context.strokeStyle = "#dadce0";
+      context.lineWidth = 4;
+      context.strokeRect(18, 18, canvas.width - 36, canvas.height - 36);
+    </script>
+  </body>
+</html>

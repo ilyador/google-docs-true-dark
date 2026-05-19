@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en" data-gdt-fixture>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Extension Match Fixture</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font: 14px/1.4 Arial, sans-serif;
+        background: #f8fafd;
+        color: #202124;
+      }
+
+      .docs-titlebar,
+      .docs-menubar,
+      .docs-toolbar-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        height: 42px;
+        padding: 0 18px;
+        border-bottom: 1px solid #dadce0;
+        background: #fff;
+      }
+
+      .docs-titlebar {
+        justify-content: space-between;
+      }
+
+      .fixture-titlebar-main,
+      .fixture-titlebar-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .docs-title-input {
+        width: 270px;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        padding: 6px 8px;
+        font-size: 18px;
+      }
+
+      .workspace {
+        display: grid;
+        grid-template-columns: 1fr 320px;
+        gap: 24px;
+        min-height: calc(100vh - 126px);
+        padding: 28px 36px;
+      }
+
+      .kix-page {
+        width: min(820px, 100%);
+        min-height: 760px;
+        margin: 0 auto;
+        padding: 72px;
+        background: #fff;
+        box-shadow: 0 2px 9px rgba(60, 64, 67, 0.3);
+      }
+
+      .docos-sidebar,
+      .docos-docoview,
+      .docs-revisions-tile {
+        background: #fff;
+        border: 1px solid #dadce0;
+        padding: 14px;
+      }
+    </style>
+  </head>
+  <body class="docs-gm">
+    <div id="docs-chrome">
+      <div class="docs-titlebar">
+        <div class="fixture-titlebar-main">
+          <input class="docs-title-input" value="Extension Match Fixture">
+          <button class="docs-titlebar-badge" aria-label="Star">Star</button>
+          <button class="docs-titlebar-badge" aria-label="Document status">Cloud</button>
+        </div>
+        <div class="fixture-titlebar-actions">
+          <button class="docs-gm3-icon-button" aria-label="Version history">History</button>
+          <button class="docs-gm3-icon-button" data-tooltip="Open comment history">Comments</button>
+          <button class="docs-gm3-menu-button" aria-label="Start a video call">Meet <span class="fixture-caret">v</span></button>
+          <button class="jfk-button jfk-button-action share-client-button" aria-label="Share">Share <span class="fixture-caret">v</span></button>
+        </div>
+      </div>
+      <div class="docs-menubar">
+        <span class="goog-control">File</span>
+        <span class="goog-control">Edit</span>
+        <span class="goog-control">View</span>
+      </div>
+      <div class="docs-toolbar-wrapper">
+        <button class="goog-toolbar-button"><span class="docs-icon-img">B</span></button>
+        <button class="goog-flat-menu-button">Normal text</button>
+      </div>
+    </div>
+
+    <main class="workspace">
+      <section id="docs-editor" class="kix-appview-editor">
+        <article class="kix-page" style="background-color: #ffffff; color: #202124;">
+          <p style="color: #202124;">Extension-loaded black document text should become light.</p>
+          <p style="color: #1155cc;">Extension-loaded blue text should keep its hue.</p>
+          <p style="background-color: #fff2cc; color: #3c4043;">Extension-loaded pale highlight should become dark and readable.</p>
+          <img alt="non-inverted sample" width="180" height="120" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='240'%3E%3Crect width='360' height='240' fill='%23ff6b6b'/%3E%3Ccircle fill='%23ffe66d' cx='252' cy='76' r='42'/%3E%3Crect y='160' width='360' height='80' fill='%232d3047'/%3E%3C/svg%3E">
+          <canvas id="canvas-doc" width="620" height="150" style="display: block; width: 100%; height: 150px; margin-top: 28px;"></canvas>
+        </article>
+      </section>
+      <aside class="docos-sidebar">
+        <div class="docos-docoview">
+          <strong style="color: #202124;">Reviewer</strong>
+          <p style="color: #3c4043;">Comment sidebar surface should become dark.</p>
+        </div>
+        <div class="docs-revisions-tile" style="background-color: #f1f3f4;">
+          <strong>Version history</strong>
+          <p style="color: #5f6368;">Today, 18:42</p>
+        </div>
+      </aside>
+    </main>
+
+    <script>
+      const canvas = document.getElementById("canvas-doc");
+      const context = canvas.getContext("2d");
+      context.fillStyle = "#ffffff";
+      context.fillRect(0, 0, canvas.width, canvas.height);
+      context.fillStyle = "#202124";
+      context.font = "24px Arial";
+      context.fillText("Canvas text patched by extension.", 28, 58);
+      context.fillStyle = "#1155cc";
+      context.fillText("Blue canvas text remains blue.", 28, 106);
+    </script>
+  </body>
+</html>

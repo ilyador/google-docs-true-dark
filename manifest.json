@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "Google Docs True Dark",
+  "short_name": "Docs True Dark",
+  "version": "0.1.2",
+  "description": "System-aware dark mode for Google Docs that adapts UI and document colors without inverting images.",
+  "minimum_chrome_version": "120",
+  "host_permissions": ["https://docs.google.com/document/*"],
+  "content_scripts": [
+    {
+      "matches": ["https://docs.google.com/document/*"],
+      "js": ["src/docs-canvas.js"],
+      "run_at": "document_start",
+      "all_frames": true,
+      "world": "MAIN"
+    },
+    {
+      "matches": ["https://docs.google.com/document/*"],
+      "css": ["src/docs-dark.css"],
+      "js": ["src/docs-dark.js"],
+      "run_at": "document_start",
+      "all_frames": true
+    }
+  ]
+}
