@@ -129,58 +129,79 @@
       style = document.createElement("style");
       style.id = RUNTIME_STYLE_ID;
       style.textContent = `
-html[data-gdt-dark="on"] :is(#docs-menubar,.docs-menubar,.docs-menubar-container) {
+html[data-gdt-dark="on"] {
+  --gdt-topbar: #171a21;
+  --gdt-topbar-text: #eaf0f8;
+  --gdt-topbar-line: #343b47;
+  --gdt-topbar-hover: rgba(120, 168, 255, 0.12);
+}
+
+html[data-gdt-dark="on"] :is(#docs-titlebar,#docs-titlebar-container,.docs-titlebar,.docs-titlebar-buttons,.docs-titlebar-badges) {
+  background-color: var(--gdt-topbar) !important;
+  border-color: var(--gdt-topbar-line) !important;
+  box-shadow: none !important;
+  color: var(--gdt-topbar-text) !important;
+}
+
+html[data-gdt-dark="on"] :is(.docs-title-input,.docs-title-input-label,.docs-title-input-label-inner,.docs-title-input-wrapper,.docs-title-widget,.docs-title-outer,.docs-title-inner,.docs-title-inline-rename,.docs-titlebar-badge,.docs-titlebar-badge-container) {
   background: transparent !important;
+  background-color: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  color: var(--gdt-topbar-text) !important;
+  opacity: 1 !important;
+  outline: none !important;
+}
+
+html[data-gdt-dark="on"] :is(#docs-menubar,.docs-menubar,.docs-menubar-container) {
   background-color: transparent !important;
   box-shadow: none !important;
 }
+
 html[data-gdt-dark="on"] :is(#docs-menubar,.docs-menubar,.docs-menubar-container) :is(.menu-button,.goog-control,.goog-control-caption,[role="menuitem"]) {
-  background: transparent !important;
   background-color: transparent !important;
   border-color: transparent !important;
   box-shadow: none !important;
-  color: #eef3fb !important;
+  color: var(--gdt-topbar-text) !important;
   opacity: 1 !important;
 }
+
+html[data-gdt-dark="on"] :is(#docs-menubar,.docs-menubar,.docs-menubar-container) :is(.menu-button:hover,.goog-control-hover,.goog-control-open,[role="menuitem"]:hover) {
+  background-color: var(--gdt-topbar-hover) !important;
+}
+
 html[data-gdt-dark="on"] :is(#docs-titlebar,#docs-titlebar-container,.docs-titlebar,.docs-titlebar-buttons,.docs-titlebar-badges) :is(button,[role="button"],.jfk-button,.goog-button,.docs-material-button,.docs-gm3-button,.docs-gm3-icon-button,.docs-gm3-menu-button,.docs-titlebar-button) {
   background-color: transparent !important;
-  border-color: transparent !important;
+  border: 0 !important;
   box-shadow: none !important;
-  color: #eaf0f8 !important;
+  color: var(--gdt-topbar-text) !important;
   opacity: 1 !important;
+  outline: none !important;
 }
-html[data-gdt-dark="on"] :is([aria-label*="history" i],[aria-label*="comment" i],[aria-label*="meet" i],[aria-label*="call" i],[aria-label*="star" i],[aria-label*="move" i],[aria-label*="document status" i],[data-tooltip*="history" i],[data-tooltip*="comment" i],[data-tooltip*="meet" i],[data-tooltip*="call" i],[data-tooltip*="star" i],[data-tooltip*="move" i],[data-tooltip*="document status" i]) {
-  background-color: transparent !important;
-  border-color: transparent !important;
-  box-shadow: none !important;
-  color: #eaf0f8 !important;
-  opacity: 1 !important;
-}
-html[data-gdt-dark="on"] :is(#docs-titlebar-share-client-button,#scb-quick-actions-menu-button,.docs-titlebar-share-client-button,.docs-titlebar-share-button,.share-client-button,.scb-button,.scb-split-button,[aria-label*="share" i],[data-tooltip*="share" i]) {
-  background: transparent !important;
-  background-color: transparent !important;
-  border-color: transparent !important;
-  box-shadow: none !important;
-  color: #eaf0f8 !important;
-  opacity: 1 !important;
-}
-html[data-gdt-dark="on"] :is(#docs-titlebar,#docs-titlebar-container,.docs-titlebar,.docs-titlebar-buttons,.docs-titlebar-badges,[aria-label*="history" i],[aria-label*="comment" i],[aria-label*="meet" i],[aria-label*="call" i],[aria-label*="star" i],[aria-label*="move" i],[aria-label*="document status" i],[data-tooltip*="history" i],[data-tooltip*="comment" i],[data-tooltip*="meet" i],[data-tooltip*="call" i],[data-tooltip*="star" i],[data-tooltip*="move" i],[data-tooltip*="document status" i]) :is(.docs-icon-img,.docs-icon-img-container) {
+
+html[data-gdt-dark="on"] :is(#docs-titlebar,#docs-titlebar-container,.docs-titlebar,.docs-titlebar-buttons,.docs-titlebar-badges) :is(.docs-icon-img,.docs-icon-img-container) {
   filter: var(--gdt-icon-filter) !important;
   opacity: 1 !important;
 }
-html[data-gdt-dark="on"] :is(#docs-titlebar-share-client-button,#scb-quick-actions-menu-button,.docs-titlebar-share-client-button,.docs-titlebar-share-button,.share-client-button,.scb-button,.scb-split-button,[aria-label*="share" i],[data-tooltip*="share" i]) :is(.docs-icon-img,.docs-icon-img-container) {
-  filter: var(--gdt-icon-filter) !important;
+
+html[data-gdt-dark="on"] :is(#docs-titlebar,#docs-titlebar-container,.docs-titlebar,.docs-titlebar-buttons,.docs-titlebar-badges) :is(.docs-icon-masked-image) {
+  background-color: var(--gdt-topbar-text) !important;
+  color: var(--gdt-topbar-text) !important;
   opacity: 1 !important;
 }
-html[data-gdt-dark="on"] :is(#docs-titlebar,#docs-titlebar-container,.docs-titlebar,.docs-titlebar-buttons,.docs-titlebar-badges,[aria-label*="history" i],[aria-label*="comment" i],[aria-label*="meet" i],[aria-label*="call" i],[aria-label*="star" i],[aria-label*="move" i],[aria-label*="document status" i],[data-tooltip*="history" i],[data-tooltip*="comment" i],[data-tooltip*="meet" i],[data-tooltip*="call" i],[data-tooltip*="star" i],[data-tooltip*="move" i],[data-tooltip*="document status" i]) :is(.docs-icon-masked-image) {
-  background-color: #eaf0f8 !important;
-  color: #eaf0f8 !important;
+
+html[data-gdt-dark="on"] :is(#docs-titlebar-share-client-button,#scb-quick-actions-menu-button,.docs-titlebar-share-client-button,.docs-titlebar-share-button,.share-client-button,.scb-button,.scb-split-button) {
+  background-color: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  color: var(--gdt-topbar-text) !important;
   opacity: 1 !important;
+  outline: none !important;
 }
-html[data-gdt-dark="on"] :is(#docs-titlebar-share-client-button,#scb-quick-actions-menu-button,.docs-titlebar-share-client-button,.docs-titlebar-share-button,.share-client-button,.scb-button,.scb-split-button,[aria-label*="share" i],[data-tooltip*="share" i]) :is(.docs-icon-masked-image) {
-  background-color: #eaf0f8 !important;
-  color: #eaf0f8 !important;
-  opacity: 1 !important;
+
+html[data-gdt-dark="on"] :is(.docs-logo,.docs-homescreen-icon,.docs-homescreen-icon-container,[aria-label*="docs home" i],[aria-label*="google docs" i],[class*="docs-logo" i],[class*="docs-home" i],[class*="product-logo" i]) {
+  background-color: transparent !important;
+  box-shadow: none !important;
 }
       `;
     }
@@ -207,7 +228,7 @@ html[data-gdt-dark="on"] :is(#docs-titlebar-share-client-button,#scb-quick-actio
 
     chromeFrame = window.requestAnimationFrame(() => {
       chromeFrame = 0;
-      restyleChrome();
+      ensureRuntimeCss();
     });
   }
 
