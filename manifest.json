@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Google Docs True Dark",
   "short_name": "Docs True Dark",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "System-aware dark mode for Google Docs that adapts UI and document colors without inverting images.",
   "minimum_chrome_version": "120",
   "host_permissions": ["https://docs.google.com/document/*"],
