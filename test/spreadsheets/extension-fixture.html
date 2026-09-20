@@ -1,14 +1,144 @@
 <!doctype html>
-<html lang="en" data-gdt-fixture>
+<html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Non Docs Fixture</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Google Sheets True Dark Fixture</title>
+    <link rel="stylesheet" href="../../src/sheets-dark.css">
+    <style>
+      * { box-sizing: border-box; }
+      body { margin: 0; font: 14px/1.4 Arial, sans-serif; background: #f8fafd; color: #1f1f1f; }
+      #docs-chrome { background: #f8fafd; }
+      #docs-titlebar-container { display: flex; align-items: center; justify-content: space-between; height: 56px; padding: 0 18px; }
+      .title-left, .title-actions, #docs-menubar, #docs-toolbar, .sheet-tabs { display: flex; align-items: center; gap: 8px; }
+      .docs-branding-icon-img { display: inline-block; width: 32px; height: 32px; border-radius: 4px; background: #0f9d58; }
+      .docs-title-input { width: 240px; border: 0; background: transparent; font-size: 18px; }
+      #docs-menubars { padding: 0 62px; }
+      .menu-button { padding: 4px 7px; border: 1px solid transparent; border-radius: 4px; }
+      #docs-toolbar-wrapper { margin: 8px 16px; padding: 7px 10px; border-radius: 28px; background: #f0f4f9; }
+      .goog-toolbar-button, .goog-toolbar-combo-button { min-width: 32px; padding: 6px 8px; border: 1px solid transparent; border-radius: 4px; background: transparent; }
+      #docs-additional-bars { display: flex; height: 34px; border-bottom: 1px solid #dadce0; background: #fff; }
+      #t-name-box { width: 120px; border: 0; border-right: 1px solid #dadce0; padding: 7px 10px; }
+      .formula-bar { flex: 1; padding: 7px 12px; }
+      .workspace { display: grid; grid-template-columns: 1fr 320px; min-height: calc(100vh - 174px); }
+      #docs-editor { position: relative; height: 662px; overflow: hidden; background: #f8fafd; }
+      #sheet-canvas { position: absolute; z-index: 2; inset: 0 0 42px; display: block; width: 100%; height: 620px; }
+      .grid-table-container { position: absolute; z-index: 3; inset: 0 0 42px; }
+      .grid-scrollable-wrapper, .grid4-inner-container { width: 100%; height: 100%; }
+      .docs-tiled-sidebar { padding: 20px; border-left: 1px solid #dadce0; background: #f0f4f9; }
+      .sidebar-card { margin-top: 18px; padding: 14px; border: 1px solid #dadce0; border-radius: 8px; background: #fff; }
+      .docos-docoview, .docs-revisions-tile { margin-top: 18px; padding: 14px; border: 1px solid #dadce0; border-radius: 8px; background: #fff; }
+      .sheet-tabs { position: absolute; z-index: 4; right: 0; bottom: 0; left: 0; height: 42px; padding: 0 14px; border-top: 1px solid #dadce0; background: #fff; }
+      .docs-sheet-tab { padding: 8px 14px; border-radius: 4px; }
+      .docs-sheet-active-tab { background: #dde3ea; color: #0b57d0; }
+      #docs-titlebar-share-client-button { display: inline-flex; }
+      #docs-titlebar-share-client-button > div { padding: 9px 14px; background: #c2e7ff; color: #004a77; }
+      .scb-split-button { border-radius: 100px 0 0 100px; }
+      #scb-quick-actions-menu-button { border-radius: 0 100px 100px 0; }
+    </style>
   </head>
-  <body>
-    <main class="kix-appview-editor">
-      <article class="kix-page" style="background-color: #ffffff; color: #202124;">
-        This page intentionally lives under /spreadsheets/ and should not receive the extension content script.
-      </article>
+  <body class="docs-gm">
+    <div id="docs-chrome" class="docs-material">
+      <div id="docs-titlebar-container" class="docs-branding-spreadsheets">
+        <div class="title-left">
+          <a id="docs-branding-logo-link" aria-label="Sheets home"><span class="docs-branding-icon-img"></span></a>
+          <input class="docs-title-input" value="Quarterly Plan">
+          <button id="docs-star" class="docs-titlebar-badge">Star</button>
+          <button id="docs-folder" class="docs-titlebar-badge">Move</button>
+        </div>
+        <div class="title-actions">
+          <button id="docs-revisions-appbarbutton" class="docs-titlebar-button">History</button>
+          <button id="docs-docos-commentsbutton" class="docs-titlebar-button">Comments</button>
+          <button id="docs-meet-in-editors-entrypointbutton" class="docs-titlebar-button">Meet</button>
+          <span id="docs-titlebar-share-client-button">
+            <div class="scb-button scb-split-button">Share</div>
+            <div id="scb-quick-actions-menu-button">v</div>
+          </span>
+        </div>
+      </div>
+      <div id="docs-menubars"><div id="docs-menubar" class="docs-menubar">
+        <span class="menu-button goog-control">File</span><span class="menu-button goog-control">Edit</span><span class="menu-button goog-control">View</span><span class="menu-button goog-control">Insert</span><span class="menu-button goog-control">Format</span><span class="menu-button goog-control">Data</span><span class="menu-button goog-control">Tools</span><span class="menu-button goog-control">Extensions</span><span class="menu-button goog-control">Help</span>
+      </div></div>
+      <div id="docs-toolbar-wrapper" class="docs-main-toolbars"><div id="docs-toolbar" class="goog-toolbar">
+        <button class="goog-toolbar-button"><span class="docs-icon-img">Undo</span></button>
+        <button class="goog-toolbar-button"><span class="docs-icon-img">Print</span></button>
+        <button class="goog-toolbar-combo-button">100%</button>
+        <button class="goog-toolbar-button">$</button>
+        <button class="goog-toolbar-button">%</button>
+        <button class="goog-toolbar-combo-button">Open Sans</button>
+        <button class="goog-toolbar-button">B</button>
+        <button class="goog-toolbar-button">I</button>
+      </div></div>
+      <div id="docs-additional-bars">
+        <input id="t-name-box" class="waffle-name-box" value="B18">
+        <div class="formula-bar"><span class="cell-input">=SUM(B2:B17)</span></div>
+      </div>
+    </div>
+
+    <main class="workspace">
+      <section id="docs-editor" class="grid-container">
+        <canvas id="sheet-canvas" width="1440" height="620"></canvas>
+        <div class="grid-table-container" aria-hidden="true">
+          <div class="grid-fixed-wrapper"></div>
+          <div class="grid-scrollable-wrapper">
+            <div class="grid4-inner-container"></div>
+          </div>
+        </div>
+        <div class="sheet-tabs docs-sheet-container">
+          <span>+</span><span class="docs-sheet-tab docs-sheet-active-tab">Quests</span><span class="docs-sheet-tab">Events</span><span class="docs-sheet-tab">Spells</span>
+        </div>
+      </section>
+      <aside class="docs-tiled-sidebar">
+        <h2 id="docs-tiled-sidebar-title" class="docs-sidebar-header-text">Tables</h2>
+        <p>Create structured tables and summaries.</p>
+        <div class="sidebar-card docs-material-card"><strong>Project tracker</strong><p>Owners, status, and due dates.</p></div>
+        <div class="sidebar-card docs-material-card"><strong>Inventory</strong><p>Products, stock, and suppliers.</p></div>
+        <div class="docos-docoview"><strong class="docos-author">Reviewer</strong><p class="docos-comment-text">The formula and totals look correct.</p></div>
+        <div class="docs-revisions-tile"><strong>Version history</strong><p>Today, 22:14</p></div>
+      </aside>
     </main>
+
+    <img id="sheet-image" hidden alt="untouched image" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='60'%3E%3Crect width='120' height='60' fill='%23ff6b6b'/%3E%3Ccircle cx='88' cy='22' r='15' fill='%23ffe66d'/%3E%3C/svg%3E">
+    <script src="../../src/docs-canvas.js"></script>
+    <script src="../../src/theme-controller.js"></script>
+    <script>
+      const canvas = document.getElementById("sheet-canvas");
+      const context = canvas.getContext("2d");
+      const rowHeight = 31;
+      const columnWidths = [54, 220, 260, 260, 220, 220];
+      context.fillStyle = "#ffffff";
+      context.fillRect(0, 0, canvas.width, canvas.height);
+      context.fillStyle = "#f8f9fa";
+      context.fillRect(0, 0, canvas.width, rowHeight);
+      context.fillRect(0, 0, columnWidths[0], canvas.height);
+      context.strokeStyle = "#dadce0";
+      context.lineWidth = 1;
+      for (let y = 0; y <= canvas.height; y += rowHeight) {
+        context.beginPath(); context.moveTo(0, y + 0.5); context.lineTo(canvas.width, y + 0.5); context.stroke();
+      }
+      let x = 0;
+      for (const width of columnWidths) {
+        context.beginPath(); context.moveTo(x + 0.5, 0); context.lineTo(x + 0.5, canvas.height); context.stroke();
+        x += width;
+      }
+      context.fillStyle = "#202124";
+      context.font = "14px Arial";
+      context.fillText("Light", 68, 52);
+      context.fillText("Chaos", 288, 52);
+      context.fillText("Order", 548, 52);
+      context.fillStyle = "#1155cc";
+      context.fillText("Blue keeps its hue", 68, 91);
+      context.fillStyle = "#fff2cc";
+      context.fillRect(284, 101, 250, 30);
+      context.fillStyle = "#3c4043";
+      context.fillText("Pale highlight becomes subdued", 290, 122);
+      const sheetImage = document.getElementById("sheet-image");
+      const drawSheetImage = () => context.drawImage(sheetImage, 68, 150, 120, 60);
+      if (sheetImage.complete) {
+        drawSheetImage();
+      } else {
+        sheetImage.addEventListener("load", drawSheetImage, { once: true });
+      }
+    </script>
   </body>
 </html>

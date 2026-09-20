@@ -1,14 +1,20 @@
 {
   "manifest_version": 3,
-  "name": "Google Docs True Dark",
-  "short_name": "Docs True Dark",
-  "version": "0.1.4",
-  "description": "System-aware dark mode for Google Docs that adapts UI and document colors without inverting images.",
+  "name": "Google Docs & Sheets True Dark",
+  "short_name": "True Dark",
+  "version": "0.2.1",
+  "description": "System-aware dark mode for Google Docs and Sheets with semantic color mapping and untouched images.",
   "minimum_chrome_version": "120",
-  "host_permissions": ["https://docs.google.com/document/*"],
+  "host_permissions": [
+    "https://docs.google.com/document/*",
+    "https://docs.google.com/spreadsheets/*"
+  ],
   "content_scripts": [
     {
-      "matches": ["https://docs.google.com/document/*"],
+      "matches": [
+        "https://docs.google.com/document/*",
+        "https://docs.google.com/spreadsheets/*"
+      ],
       "js": ["src/docs-canvas.js"],
       "run_at": "document_start",
       "all_frames": true,
@@ -16,8 +22,15 @@
     },
     {
       "matches": ["https://docs.google.com/document/*"],
-      "css": ["src/docs-dark.css"],
-      "js": ["src/docs-dark.js"],
+      "css": ["src/docs-dark.css", "src/docs-ui.css"],
+      "js": ["src/theme-controller.js"],
+      "run_at": "document_start",
+      "all_frames": true
+    },
+    {
+      "matches": ["https://docs.google.com/spreadsheets/*"],
+      "css": ["src/sheets-dark.css"],
+      "js": ["src/theme-controller.js"],
       "run_at": "document_start",
       "all_frames": true
     }

@@ -1,10 +1,11 @@
 <!doctype html>
-<html lang="en" data-gdt-fixture>
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Google Docs True Dark Fixture</title>
     <link rel="stylesheet" href="../src/docs-dark.css">
+    <link rel="stylesheet" href="../src/docs-ui.css">
     <style>
       * {
         box-sizing: border-box;
@@ -40,6 +41,14 @@
         gap: 10px;
       }
 
+      .docs-branding-icon-img {
+        display: block;
+        width: 28px;
+        height: 34px;
+        border-radius: 3px;
+        background: #4285f4;
+      }
+
       .docs-title-input {
         width: 270px;
         border: 1px solid transparent;
@@ -55,6 +64,24 @@
         border-radius: 4px;
         padding: 6px 10px;
         background: #fff;
+      }
+
+      #docs-titlebar-share-client-button {
+        display: inline-flex;
+      }
+
+      #docs-titlebar-share-client-button > div {
+        padding: 8px 12px;
+        background: #c2e7ff;
+        color: #004a77;
+      }
+
+      .scb-split-button {
+        border-radius: 100px 0 0 100px;
+      }
+
+      #scb-quick-actions-menu-button {
+        border-radius: 0 100px 100px 0;
       }
 
       .workspace {
@@ -136,8 +163,9 @@
   </head>
   <body class="docs-gm">
     <div id="docs-chrome">
-      <div class="docs-titlebar">
+      <div id="docs-titlebar-container" class="docs-titlebar">
         <div class="fixture-titlebar-main">
+          <a id="docs-branding-logo-link" aria-label="Docs home"><span class="docs-branding-icon-img"></span></a>
           <input class="docs-title-input" value="Quarterly Review Draft">
           <button class="docs-titlebar-badge" aria-label="Star">Star</button>
           <button class="docs-titlebar-badge" aria-label="Document status">Cloud</button>
@@ -146,20 +174,25 @@
           <button class="docs-gm3-icon-button" aria-label="Version history">History</button>
           <button class="docs-gm3-icon-button" data-tooltip="Open comment history">Comments</button>
           <button class="docs-gm3-menu-button" aria-label="Start a video call">Meet <span class="fixture-caret">v</span></button>
-          <button class="jfk-button jfk-button-action share-client-button" aria-label="Share">Share <span class="fixture-caret">v</span></button>
+          <span id="docs-titlebar-share-client-button">
+            <div class="jfk-button jfk-button-action scb-button scb-split-button" aria-label="Share">Share</div>
+            <div id="scb-quick-actions-menu-button" class="goog-flat-menu-button" aria-label="Quick sharing actions">v</div>
+          </span>
         </div>
       </div>
-      <div class="docs-menubar">
+      <div id="docs-menubar" class="docs-menubar">
         <span class="goog-control">File</span>
         <span class="goog-control">Edit</span>
         <span class="goog-control">View</span>
         <span class="goog-control">Insert</span>
         <span class="goog-control">Tools</span>
       </div>
-      <div class="docs-toolbar-wrapper">
-        <button class="goog-toolbar-button"><span class="docs-icon-img">B</span></button>
-        <button class="goog-toolbar-button"><span class="docs-icon-img">I</span></button>
-        <button class="goog-flat-menu-button">Normal text</button>
+      <div id="docs-toolbar-wrapper" class="docs-toolbar-wrapper">
+        <div id="docs-toolbar" class="goog-toolbar">
+          <button class="goog-toolbar-button"><span class="docs-icon-img">B</span></button>
+          <button class="goog-toolbar-button"><span class="docs-icon-img">I</span></button>
+          <button class="goog-flat-menu-button">Normal text</button>
+        </div>
       </div>
     </div>
 
@@ -200,7 +233,7 @@
     </main>
 
     <script src="../src/docs-canvas.js"></script>
-    <script src="../src/docs-dark.js"></script>
+    <script src="../src/theme-controller.js"></script>
     <script>
       const canvas = document.getElementById("canvas-doc");
       const context = canvas.getContext("2d");

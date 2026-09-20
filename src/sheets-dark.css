@@ -1,0 +1,715 @@
+html[data-gdt-app="sheets"][data-gdt-dark="on"] {
+  color-scheme: dark !important;
+  --gdt-bg: #0f1116;
+  --gdt-chrome: #171a21;
+  --gdt-toolbar: #20242d;
+  --gdt-surface: #1a1f28;
+  --gdt-surface-raised: #232a35;
+  --gdt-grid-bg: #171b22;
+  --gdt-text: #e8ecf2;
+  --gdt-text-muted: #aeb7c4;
+  --gdt-text-subtle: #818c9b;
+  --gdt-line: #343b47;
+  --gdt-line-strong: #4b5667;
+  --gdt-hover: #2a303b;
+  --gdt-open: #303846;
+  --gdt-accent: #8bb3ff;
+  --gdt-share: #24364f;
+  --gdt-share-hover: #2b4261;
+  --gdt-share-line: #40546d;
+  --gdt-icon-filter: brightness(0) saturate(100%) invert(92%) sepia(9%) saturate(276%) hue-rotate(178deg) brightness(101%) contrast(91%);
+  --gdt-icon-disabled-filter: brightness(0) saturate(100%) invert(68%) sepia(8%) saturate(407%) hue-rotate(179deg) brightness(92%) contrast(88%);
+  --gm3-sys-color-background: #0f1116 !important;
+  --gm3-sys-color-on-background: #e8ecf2 !important;
+  --gm3-sys-color-surface: #171a21 !important;
+  --gm3-sys-color-surface-container-lowest: #0f1116 !important;
+  --gm3-sys-color-surface-container-low: #171a21 !important;
+  --gm3-sys-color-surface-container: #20242d !important;
+  --gm3-sys-color-surface-container-high: #252b36 !important;
+  --gm3-sys-color-surface-container-highest: #2b323f !important;
+  --gm3-sys-color-on-surface: #e8ecf2 !important;
+  --gm3-sys-color-on-surface-variant: #c8d0dc !important;
+  --gm3-sys-color-outline: #596575 !important;
+  --gm3-sys-color-outline-variant: #343b47 !important;
+  --gm3-sys-color-primary: #9bbdff !important;
+  --gm3-sys-color-on-primary: #071a33 !important;
+  --gm3-sys-color-primary-container: #274c78 !important;
+  --gm3-sys-color-on-primary-container: #f4f7ff !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"],
+html[data-gdt-app="sheets"][data-gdt-dark="on"] body,
+html[data-gdt-app="sheets"][data-gdt-dark="on"] body.docs-gm {
+  background: var(--gdt-bg) !important;
+  color: var(--gdt-text) !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] ::selection {
+  background: rgba(120, 168, 255, 0.38) !important;
+  color: #ffffff !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] :is(img, picture, video, canvas, object, embed, svg image) {
+  filter: none !important;
+  mix-blend-mode: normal !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] #docs-chrome {
+  background: var(--gdt-chrome) !important;
+  color: var(--gdt-text) !important;
+  border-color: var(--gdt-line) !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] #docs-chrome :is(
+  #docs-header,
+  #docs-titlebar-container,
+  .docs-titlebar,
+  .docs-titlebar-buttons,
+  .docs-titlebar-badges,
+  #docs-menubars,
+  #docs-menubar,
+  .docs-menubars,
+  .docs-menubar,
+  .docs-menubar-container
+) {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  color: var(--gdt-text) !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] #docs-chrome :is(
+  .docs-title-input,
+  .docs-title-input-label,
+  .docs-title-input-label-inner,
+  .docs-title-input-wrapper,
+  .docs-title-widget,
+  .docs-title-outer,
+  .docs-title-inner,
+  .docs-title-inline-rename,
+  .docs-titlebar-badge,
+  .docs-titlebar-badge-container
+) {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  color: var(--gdt-text) !important;
+  outline: none !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] #docs-chrome :is(
+  #docs-menubar,
+  .docs-menubar,
+  .docs-menubar-container
+) :is(.menu-button, .goog-control, .goog-control-caption, [role="menuitem"]) {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  color: var(--gdt-text) !important;
+  opacity: 1 !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] #docs-chrome :is(
+  #docs-menubar,
+  .docs-menubar,
+  .docs-menubar-container
+) :is(.menu-button:hover, .goog-control-hover, .goog-control-open, [role="menuitem"]:hover) {
+  background: var(--gdt-hover) !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] #docs-toolbar-wrapper,
+html[data-gdt-app="sheets"][data-gdt-dark="on"] #docs-primary-toolbars,
+html[data-gdt-app="sheets"][data-gdt-dark="on"] #docs-toolbar,
+html[data-gdt-app="sheets"][data-gdt-dark="on"] #docs-side-toolbar,
+html[data-gdt-app="sheets"][data-gdt-dark="on"] #docs-omnibox-toolbar,
+html[data-gdt-app="sheets"][data-gdt-dark="on"] .docs-main-toolbars,
+html[data-gdt-app="sheets"][data-gdt-dark="on"] .docs-collapsable-toolbar,
+html[data-gdt-app="sheets"][data-gdt-dark="on"] .goog-toolbar {
+  background: var(--gdt-toolbar) !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  color: var(--gdt-text) !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] #docs-chrome :is(
+  .goog-toolbar-button,
+  .goog-toolbar-toggle-button,
+  .goog-toolbar-menu-button,
+  .goog-toolbar-combo-button,
+  .goog-toolbar-select,
+  .goog-flat-menu-button,
+  .docs-toolbar-button,
+  .docs-toolbar-menu-button,
+  .docs-toolbar-select,
+  .docs-material-gm-select,
+  .docs-toolbar-input,
+  .docs-gm3-icon-button,
+  [role="combobox"]
+) {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  color: var(--gdt-text) !important;
+  outline: none !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] #docs-chrome :is(
+  .goog-toolbar-button-outer-box,
+  .goog-toolbar-button-inner-box,
+  .goog-toolbar-menu-button-outer-box,
+  .goog-toolbar-menu-button-inner-box,
+  .goog-toolbar-combo-button-outer-box,
+  .goog-toolbar-combo-button-inner-box,
+  .goog-toolbar-menu-button-caption,
+  .goog-toolbar-combo-button-caption,
+  .goog-toolbar-combo-button-input
+) {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  color: inherit !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] #docs-chrome :is(
+  .goog-toolbar-button-hover,
+  .goog-toolbar-menu-button-hover,
+  .goog-toolbar-combo-button-hover,
+  .goog-toolbar-menu-button-open,
+  .goog-flat-menu-button-hover,
+  .docs-toolbar-button:hover,
+  .docs-toolbar-menu-button:hover,
+  .docs-toolbar-select:hover,
+  .docs-material-gm-select:hover,
+  .docs-gm3-icon-button:hover,
+  [role="combobox"]:hover
+) {
+  background: var(--gdt-hover) !important;
+  border-color: transparent !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] #docs-chrome :is(
+  .goog-toolbar-button-active,
+  .goog-toolbar-button-checked,
+  .goog-toolbar-toggle-button-checked,
+  .docs-gm3-icon-button[aria-pressed="true"],
+  .docs-toolbar-button[aria-pressed="true"]
+) {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] #docs-chrome :is(
+  .goog-toolbar-separator,
+  .docs-toolbar-separator,
+  .docs-toolbar-small-separator,
+  .docs-toolbar-inset-separator
+) {
+  background: var(--gdt-line) !important;
+  border-color: var(--gdt-line) !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] #docs-chrome :is(.docs-icon-img, .docs-icon-img-container),
+html[data-gdt-app="sheets"][data-gdt-dark="on"] :is(
+  .goog-menu,
+  .docs-dialog,
+  .docs-sidebar,
+  .docs-tiled-sidebar,
+  .waffle-sidebar,
+  .docs-revisions-sidebar,
+  .docs-sheet-container,
+  .docs-sheet-button-bar,
+  .docos
+) :is(.docs-icon-img, .docs-icon-img-container) {
+  background-color: transparent !important;
+  border-color: transparent !important;
+  filter: var(--gdt-icon-filter) !important;
+  opacity: 1 !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] #docs-chrome .docs-icon-masked-image,
+html[data-gdt-app="sheets"][data-gdt-dark="on"] :is(
+  .goog-menu,
+  .docs-dialog,
+  .docs-sidebar,
+  .docs-tiled-sidebar,
+  .waffle-sidebar,
+  .docs-revisions-sidebar,
+  .docs-sheet-container,
+  .docs-sheet-button-bar,
+  .docos
+) .docs-icon-masked-image {
+  background-color: var(--gdt-text) !important;
+  color: var(--gdt-text) !important;
+  filter: none !important;
+  opacity: 1 !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] #docs-chrome :is(
+  .goog-toolbar-button-disabled,
+  .goog-toolbar-menu-button-disabled,
+  .goog-flat-menu-button-disabled,
+  .docs-gm3-button-disabled,
+  .jfk-button-disabled,
+  [aria-disabled="true"]
+) {
+  background: transparent !important;
+  border-color: transparent !important;
+  color: var(--gdt-text-muted) !important;
+  opacity: 0.68 !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] #docs-chrome :is(
+  .goog-toolbar-button-disabled,
+  .goog-toolbar-menu-button-disabled,
+  .goog-flat-menu-button-disabled,
+  .docs-gm3-button-disabled,
+  .jfk-button-disabled,
+  [aria-disabled="true"]
+) :is(.docs-icon-img, .docs-icon-img-container) {
+  filter: var(--gdt-icon-disabled-filter) !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] #docs-chrome :is(
+  #docs-revisions-appbarbutton,
+  #docs-docos-commentsbutton,
+  #docs-meet-in-editors-entrypointbutton,
+  #docs-star,
+  #docs-folder,
+  #docs-save-indicator-badge,
+  .docs-titlebar-button,
+  .docs-titlebar-badge
+) {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  color: var(--gdt-text) !important;
+  opacity: 1 !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] #docs-chrome :is(
+  #docs-revisions-appbarbutton,
+  #docs-docos-commentsbutton,
+  #docs-meet-in-editors-entrypointbutton,
+  #docs-star,
+  #docs-folder,
+  #docs-save-indicator-badge,
+  .docs-titlebar-button,
+  .docs-titlebar-badge
+):hover {
+  background: var(--gdt-hover) !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] #docs-titlebar-share-client-button {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] #docs-titlebar-share-client-button > :is(
+  .scb-button,
+  .scb-split-button,
+  #scb-quick-actions-menu-button
+) {
+  background: var(--gdt-share) !important;
+  border-color: var(--gdt-share-line) !important;
+  box-shadow: none !important;
+  color: #eaf2ff !important;
+  opacity: 1 !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] #docs-titlebar-share-client-button > :is(
+  .scb-button,
+  .scb-split-button,
+  #scb-quick-actions-menu-button
+):hover {
+  background: var(--gdt-share-hover) !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] #docs-titlebar-share-client-button > :is(
+  .scb-button,
+  .scb-split-button,
+  #scb-quick-actions-menu-button
+) :is(.scb-button-icon, .goog-flat-menu-button-caption, .goog-flat-menu-button-dropdown) {
+  color: #eaf2ff !important;
+  opacity: 1 !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] #docs-titlebar-share-client-button .scb-button-icon {
+  background-color: #eaf2ff !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] #docs-titlebar-share-client-button .goog-flat-menu-button-dropdown {
+  border-top-color: #eaf2ff !important;
+  border-bottom-color: #eaf2ff !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] #docs-branding-logo-link {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] #docs-branding-logo-link * {
+  filter: none !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] #docs-additional-bars,
+html[data-gdt-app="sheets"][data-gdt-dark="on"] #formula-bar-container,
+html[data-gdt-app="sheets"][data-gdt-dark="on"] .formula-bar-with-name-box-wrapper,
+html[data-gdt-app="sheets"][data-gdt-dark="on"] .formula-bar,
+html[data-gdt-app="sheets"][data-gdt-dark="on"] .waffle-name-box-container,
+html[data-gdt-app="sheets"][data-gdt-dark="on"] .formula-bar-separator-container {
+  background: var(--gdt-surface) !important;
+  color: var(--gdt-text) !important;
+  border-color: var(--gdt-line) !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] :is(
+  #t-name-box,
+  #t-formula-bar-input,
+  .waffle-name-box,
+  .formula-bar .cell-input,
+  .formula-content
+) {
+  background: var(--gdt-surface) !important;
+  color: var(--gdt-text) !important;
+  border-color: var(--gdt-line) !important;
+  caret-color: var(--gdt-accent) !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] :is(
+  .formula-bar-separator,
+  #formula-bar-dragger,
+  .waffle-name-box-container,
+  #t-name-box-dropdown
+) {
+  border-color: var(--gdt-line) !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] #formula-bar-dragger {
+  background: transparent !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] #docs-editor,
+html[data-gdt-app="sheets"][data-gdt-dark="on"] :is(
+  .grid-container,
+  .grid-shim-bottom,
+  .grid-shim-end-ltr
+) {
+  background: var(--gdt-bg) !important;
+  color: var(--gdt-text) !important;
+  border-color: var(--gdt-line) !important;
+}
+
+/* These interaction layers sit above Sheets' canvas and must not obscure it. */
+html[data-gdt-app="sheets"][data-gdt-dark="on"] :is(
+  .grid-table-container,
+  .grid-fixed-wrapper,
+  .grid-scrollable-wrapper,
+  .grid4-inner-container,
+  .waffle-background-container
+) {
+  background: transparent !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] :is(
+  .grid-bottom-bar,
+  .waffle-footer-container,
+  .docs-sheet-button-bar,
+  .docs-sheet-button-bar-container,
+  .docs-sheet-outer-container,
+  .docs-sheet-container,
+  .docs-sheet-container-bar,
+  .waffle-quicksum-container
+) {
+  background: var(--gdt-chrome) !important;
+  color: var(--gdt-text) !important;
+  border-color: var(--gdt-line) !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] :is(
+  .docs-sheet-button,
+  .docs-sheet-menu-button,
+  .docs-sheet-all-button,
+  .docs-sheet-canvas-button,
+  .docs-sheet-tab,
+  .docs-sheet-left-button,
+  .docs-sheet-right-button
+) {
+  background: transparent !important;
+  color: var(--gdt-text-muted) !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] :is(
+  .docs-sheet-button,
+  .docs-sheet-menu-button,
+  .docs-sheet-all-button,
+  .docs-sheet-canvas-button,
+  .docs-sheet-tab,
+  .docs-sheet-left-button,
+  .docs-sheet-right-button
+):hover {
+  background: var(--gdt-hover) !important;
+  color: var(--gdt-text) !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] .docs-sheet-active-tab {
+  background: var(--gdt-surface-raised) !important;
+  color: var(--gdt-text) !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] .docs-sheet-active-tab .docs-sheet-tab-color {
+  opacity: 1 !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] :is(
+  .docs-tiled-sidebar,
+  .docs-tiled-sidebar-header,
+  .docs-tiled-sidebar-header-placeholder,
+  .docs-tiled-sidebar-content,
+  .docs-tiled-sidebar-scroll,
+  .waffle-sidebar,
+  .waffle-gm-sidebar,
+  .waffle-sidebar-container,
+  .waffle-sidebar-title,
+  .waffle-sidebar-content,
+  .waffle-sidebar-header-container,
+  .waffle-sidebar-footer-container,
+  .waffle-sidebar-card,
+  .docs-material-card,
+  .docs-gm3-card,
+  .docs-revisions-sidebar,
+  .docs-revisions-sidebar-header,
+  .docs-revisions-sidebar-content,
+  .docs-revisions-tile,
+  .docs-revisions-tile-content,
+  .docs-outline-pane,
+  .docs-outline-pane-header,
+  .docs-outline-pane-item,
+  .waffle-conditionalformat-view,
+  .waffle-pivot-sidebar,
+  .waffle-chart-sidebar,
+  .waffle-named-ranges-sidebar,
+  .docs-sidebar,
+  .docs-sidebars,
+  .docs-companion-app-switcher-container,
+  .companion-app-switcher-container
+) {
+  background: var(--gdt-chrome) !important;
+  color: var(--gdt-text) !important;
+  border-color: var(--gdt-line) !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] :is(
+  #docs-tiled-sidebar-title,
+  .docs-sidebar-header-text,
+  .waffle-sidebar-title-text,
+  .waffle-sidebar-content,
+  .docs-tiled-sidebar-content
+) {
+  color: var(--gdt-text) !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] :is(
+  .docs-revisions-tile:hover,
+  .docs-revisions-tile-selected,
+  .docs-outline-pane-item:hover,
+  .docs-outline-pane-item-selected
+) {
+  background: var(--gdt-hover) !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] .docs-revisions-tile * {
+  color: var(--gdt-text-muted) !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] .docs-revisions-tile :is(
+  strong,
+  [role="heading"],
+  .docs-revisions-tile-title
+) {
+  color: var(--gdt-text) !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] :is(
+  .goog-menu,
+  .goog-menu-vertical,
+  .goog-submenu,
+  .goog-palette,
+  .goog-popup,
+  .docs-dialog,
+  .modal-dialog,
+  .docs-material-gm-dialog,
+  .docs-bubble,
+  .docs-bubble-content,
+  .docs-autocomplete,
+  .waffle-named-box-menu,
+  .waffle-action-menu
+) {
+  background: var(--gdt-surface-raised) !important;
+  color: var(--gdt-text) !important;
+  border-color: var(--gdt-line) !important;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45) !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] :is(
+  .goog-menuitem,
+  .goog-menuitem-content,
+  .docs-autocomplete-row,
+  .waffle-named-box-menu-open-sidebar-button
+) {
+  background: transparent !important;
+  color: var(--gdt-text) !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] :is(
+  .goog-menuitem-highlight,
+  .goog-menuitem-hover,
+  .goog-menuitem-open,
+  .goog-menuitem-selected,
+  .docs-autocomplete-row-active
+) {
+  background: var(--gdt-hover) !important;
+  color: var(--gdt-text) !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] :is(
+  input,
+  textarea,
+  select,
+  .jfk-textinput,
+  .docs-material-gm-textinput,
+  .docs-material-gm-select
+) {
+  background: var(--gdt-surface) !important;
+  color: var(--gdt-text) !important;
+  border-color: var(--gdt-line-strong) !important;
+  caret-color: var(--gdt-accent) !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] :is(
+  .jfk-button,
+  .goog-button,
+  .docs-material-button,
+  .docs-gm3-button
+) {
+  background: var(--gdt-surface-raised) !important;
+  color: var(--gdt-text) !important;
+  border-color: var(--gdt-line) !important;
+  box-shadow: none !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] :is(
+  .jfk-button:hover,
+  .jfk-button-hover,
+  .goog-button:hover,
+  .docs-material-button:hover,
+  .docs-gm3-button:hover
+) {
+  background: var(--gdt-hover) !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] :is(
+  .jfk-button-action,
+  .docs-material-button-primary,
+  .docs-gm3-button-primary
+) {
+  background: #315f97 !important;
+  color: #ffffff !important;
+  border-color: #4d76a8 !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] :is(
+  .docs-sidebar-gm-titlebar-icon-button,
+  .docs-tiled-sidebar-close,
+  .waffle-sidebar-title-close
+) {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  color: var(--gdt-text-muted) !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] :is(input::placeholder, textarea::placeholder) {
+  color: var(--gdt-text-subtle) !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] :is(
+  .docos,
+  .docos-anchoreddocoview,
+  .docos-docoview,
+  .docos-streamdocoview,
+  .docos-replyview,
+  .docos-input,
+  .docos-sidebar,
+  .docos-comments-page,
+  .docos-comments-panel
+) {
+  background: var(--gdt-surface-raised) !important;
+  color: var(--gdt-text) !important;
+  border-color: var(--gdt-line) !important;
+  box-shadow: none !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] :is(
+  .docos-comment-text,
+  .docos-replyview-content,
+  .docos-author,
+  .docos-text,
+  .docos-action-text,
+  .docos-status-text
+) {
+  color: var(--gdt-text) !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] :is(.docos-date, .docos-status-text, .docos-quote) {
+  color: var(--gdt-text-muted) !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] :is(
+  .docs-toast,
+  .docs-snackbar,
+  .jfk-tooltip,
+  .docs-tooltip,
+  .goog-tooltip
+) {
+  background: var(--gdt-surface-raised) !important;
+  color: var(--gdt-text) !important;
+  border-color: var(--gdt-line) !important;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45) !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] :is(
+  .docs-material-colorpalette-colorswatch,
+  .goog-palette-cell,
+  .docs-material-colorpalette-cell,
+  #waffle-rich-text-editor,
+  #waffle-rich-text-editor *
+) {
+  filter: none !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] a {
+  color: var(--gdt-accent) !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] ::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] ::-webkit-scrollbar-track {
+  background: #10141b;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] ::-webkit-scrollbar-thumb {
+  background: #3a4350;
+  border: 3px solid #10141b;
+  border-radius: 999px;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] ::-webkit-scrollbar-thumb:hover {
+  background: #4a5666;
+}

@@ -4,7 +4,10 @@
   if (window.__gdtCanvasPatchInstalled) {
     return;
   }
-  window.__gdtCanvasPatchInstalled = true;
+  Object.defineProperty(window, "__gdtCanvasPatchInstalled", {
+    value: true,
+    configurable: true
+  });
 
   const MODE_ATTR = "data-gdt-page-dark";
   const FORCE_PARAM = "gdt_force_dark";
@@ -13,6 +16,7 @@
   const MEDIA = window.matchMedia("(prefers-color-scheme: dark)");
   const state = { dark: isDark() };
   const tools = createColorTools();
+  const gradientVariants = new WeakMap();
   const recorders = new WeakMap();
   const replayCanvases = new Set();
   let isReplaying = false;
@@ -20,7 +24,7 @@
 
   patchCanvasContext(window.CanvasRenderingContext2D && window.CanvasRenderingContext2D.prototype);
   patchCanvasContext(window.OffscreenCanvasRenderingContext2D && window.OffscreenCanvasRenderingContext2D.prototype);
-  patchGradients(window.CanvasGradient && window.CanvasGradient.prototype);
+  patchGradientColorStops(window.CanvasGradient && window.CanvasGradient.prototype);
   watchModeAttribute();
 
   if (typeof MEDIA.addEventListener === "function") {
@@ -96,7 +100,10 @@
     if (!proto || proto.__gdtPatched) {
       return;
     }
-    proto.__gdtPatched = true;
+    Object.defineProperty(proto, "__gdtPatched", {
+      value: true,
+      configurable: true
+    });
 
     const fillStyleDescriptor = Object.getOwnPropertyDescriptor(proto, "fillStyle");
     const strokeStyleDescriptor = Object.getOwnPropertyDescriptor(proto, "strokeStyle");
@@ -123,6 +130,8 @@
       fill: proto.fill,
       stroke: proto.stroke
     };
+
+    patchGradientFactories(proto);
 
     patchRecordedMethod(proto, originals, "beginPath", null);
     patchRecordedMethod(proto, originals, "closePath", null);
@@ -154,6 +163,25 @@
     patchMethod(proto, originals, "stroke", "border", (context, draw, args) => {
       return withStyle(context, strokeStyleDescriptor, "border", () => draw.apply(context, args));
     });
+  }
+
+  function patchGradientFactories(proto) {
+    for (const name of ["createLinearGradient", "createRadialGradient", "createConicGradient"]) {
+      const original = proto[name];
+      if (typeof original !== "function") {
+        continue;
+      }
+
+      proto[name] = function patchedGradientFactory(...args) {
+        const source = original.apply(this, args);
+        const variants = Object.create(null);
+        for (const role of ["foreground", "background", "border"]) {
+          variants[role] = original.apply(this, args);
+        }
+        gradientVariants.set(source, variants);
+        return source;
+      };
+    }
   }
 
   function patchRecordedMethod(proto, originals, name, role) {
@@ -265,6 +293,11 @@
     for (const delay of [0, 60, 180]) {
       window.setTimeout(() => {
         for (const canvas of Array.from(replayCanvases)) {
+          if ("isConnected" in canvas && !canvas.isConnected) {
+            replayCanvases.delete(canvas);
+            continue;
+          }
+
           const recorder = recorders.get(canvas);
           if (!recorder || recorder.disabled || !recorder.ops.length) {
             continue;
@@ -402,11 +435,11 @@
     let fillStyle = savedState.fillStyle;
     let strokeStyle = savedState.strokeStyle;
     if (state.dark) {
-      if ((role === "foreground" || role === "background") && typeof fillStyle === "string") {
-        fillStyle = tools.adaptCssColor(fillStyle, role) || fillStyle;
+      if (role === "foreground" || role === "background") {
+        fillStyle = adaptCanvasStyle(fillStyle, role);
       }
-      if ((role === "foreground" || role === "border") && typeof strokeStyle === "string") {
-        strokeStyle = tools.adaptCssColor(strokeStyle, role === "foreground" ? "foreground" : "border") || strokeStyle;
+      if (role === "foreground" || role === "border") {
+        strokeStyle = adaptCanvasStyle(strokeStyle, role === "foreground" ? "foreground" : "border");
       }
     }
 
@@ -425,11 +458,14 @@
     }
   }
 
-  function patchGradients(proto) {
+  function patchGradientColorStops(proto) {
     if (!proto || proto.__gdtPatched) {
       return;
     }
-    proto.__gdtPatched = true;
+    Object.defineProperty(proto, "__gdtPatched", {
+      value: true,
+      configurable: true
+    });
 
     const originalAddColorStop = proto.addColorStop;
     if (typeof originalAddColorStop !== "function") {
@@ -437,21 +473,23 @@
     }
 
     proto.addColorStop = function patchedAddColorStop(offset, color) {
-      if (state.dark && typeof color === "string") {
-        const adapted = tools.adaptCssColor(color, "background");
-        return originalAddColorStop.call(this, offset, adapted || color);
+      originalAddColorStop.call(this, offset, color);
+
+      const variants = gradientVariants.get(this);
+      if (!variants || typeof color !== "string") {
+        return;
       }
-      return originalAddColorStop.call(this, offset, color);
+
+      for (const role of ["foreground", "background", "border"]) {
+        const adapted = tools.adaptCssColor(color, role);
+        originalAddColorStop.call(variants[role], offset, adapted || color);
+      }
     };
   }
 
   function withStyle(context, descriptor, role, draw) {
     const original = descriptor.get.call(context);
-    if (typeof original !== "string") {
-      return draw();
-    }
-
-    const adapted = tools.adaptCssColor(original, role);
+    const adapted = adaptCanvasStyle(original, role);
     if (!adapted || adapted === original) {
       return draw();
     }
@@ -462,6 +500,15 @@
     } finally {
       descriptor.set.call(context, original);
     }
+  }
+
+  function adaptCanvasStyle(style, role) {
+    if (typeof style === "string") {
+      return tools.adaptCssColor(style, role) || style;
+    }
+
+    const variants = gradientVariants.get(style);
+    return variants && variants[role] ? variants[role] : style;
   }
 
   function requestDocsRepaint() {
@@ -478,6 +525,7 @@
     const canvas = document.createElement("canvas");
     const context = canvas.getContext("2d", { willReadFrequently: true });
     const cache = new Map();
+    const isSheets = window.location.pathname.includes("/spreadsheets/");
 
     function adaptCssColor(value, role) {
       const normalized = normalizeColor(value);
@@ -572,6 +620,9 @@
       }
 
       if (role === "border") {
+        if (isSheets && isNeutral && luminance > 0.30) {
+          return withAlpha({ r: 52, g: 59, b: 71 }, color.a);
+        }
         if (luminance > 0.62) {
           return isNeutral ? withAlpha({ r: 73, g: 83, b: 99 }, color.a) : hslToRgb(hsl.h, Math.min(Math.max(hsl.s, 0.22), 0.58), 0.36, color.a);
         }
@@ -586,6 +637,9 @@
       }
       if (luminance > 0.62) {
         return isNeutral ? withAlpha({ r: 29, g: 34, b: 43 }, color.a) : hslToRgb(hsl.h, Math.min(Math.max(hsl.s, 0.20), 0.52), 0.26, color.a);
+      }
+      if (isSheets && isNeutral && luminance > 0.30) {
+        return withAlpha({ r: 38, g: 44, b: 54 }, color.a);
       }
       if (luminance < 0.05) {
         return withAlpha({ r: 18, g: 22, b: 29 }, color.a);

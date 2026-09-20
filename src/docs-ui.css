@@ -1,0 +1,332 @@
+/* Authoritative Docs chrome layer. Keep this file last in manifest order. */
+html[data-gdt-app="docs"][data-gdt-dark="on"] {
+  --gdt-chrome: #171a21;
+  --gdt-toolbar: #20242d;
+  --gdt-control-hover: #2a303b;
+  --gdt-control-open: #303846;
+  --gdt-control-text: #dce3ed;
+  --gdt-control-muted: #98a3b3;
+  --gdt-control-line: #3b4452;
+  --gdt-share: #24364f;
+  --gdt-share-hover: #2b4261;
+  --gdt-share-line: #40546d;
+}
+
+html[data-gdt-app="docs"][data-gdt-dark="on"] body.docs-gm #docs-chrome {
+  background: var(--gdt-chrome) !important;
+  color: var(--gdt-control-text) !important;
+  border-color: var(--gdt-control-line) !important;
+}
+
+html[data-gdt-app="docs"][data-gdt-dark="on"] body.docs-gm #docs-chrome :is(
+  #docs-header,
+  #docs-titlebar,
+  #docs-titlebar-container,
+  .docs-titlebar,
+  .docs-titlebar-buttons,
+  .docs-titlebar-badges,
+  #docs-menubars,
+  #docs-menubar,
+  .docs-menubars,
+  .docs-menubar,
+  .docs-menubar-container
+) {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  color: var(--gdt-control-text) !important;
+}
+
+html[data-gdt-app="docs"][data-gdt-dark="on"] body.docs-gm #docs-chrome :is(
+  .docs-title-input,
+  .docs-title-input-label,
+  .docs-title-input-label-inner,
+  .docs-title-input-wrapper,
+  .docs-title-widget,
+  .docs-title-outer,
+  .docs-title-inner,
+  .docs-title-inline-rename,
+  .docs-titlebar-badge,
+  .docs-titlebar-badge-container
+) {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  color: var(--gdt-control-text) !important;
+  outline: none !important;
+}
+
+html[data-gdt-app="docs"][data-gdt-dark="on"] body.docs-gm #docs-chrome :is(
+  #docs-menubar,
+  .docs-menubar,
+  .docs-menubar-container
+) :is(.menu-button, .goog-control, .goog-control-caption, [role="menuitem"]) {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  color: var(--gdt-control-text) !important;
+  opacity: 1 !important;
+}
+
+html[data-gdt-app="docs"][data-gdt-dark="on"] body.docs-gm #docs-chrome :is(
+  #docs-menubar,
+  .docs-menubar,
+  .docs-menubar-container
+) :is(.menu-button:hover, .goog-control-hover, .goog-control-open, [role="menuitem"]:hover) {
+  background: var(--gdt-control-hover) !important;
+}
+
+html[data-gdt-app="docs"][data-gdt-dark="on"] body.docs-gm #docs-toolbar-wrapper,
+html[data-gdt-app="docs"][data-gdt-dark="on"] body.docs-gm #docs-primary-toolbars,
+html[data-gdt-app="docs"][data-gdt-dark="on"] body.docs-gm #docs-toolbar,
+html[data-gdt-app="docs"][data-gdt-dark="on"] body.docs-gm #docs-side-toolbar,
+html[data-gdt-app="docs"][data-gdt-dark="on"] body.docs-gm .docs-toolbar-wrapper,
+html[data-gdt-app="docs"][data-gdt-dark="on"] body.docs-gm .docs-toolbar,
+html[data-gdt-app="docs"][data-gdt-dark="on"] body.docs-gm .goog-toolbar {
+  background: var(--gdt-toolbar) !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  color: var(--gdt-control-text) !important;
+}
+
+html[data-gdt-app="docs"][data-gdt-dark="on"] body.docs-gm #docs-chrome :is(
+  .goog-toolbar-button,
+  .goog-toolbar-toggle-button,
+  .goog-toolbar-menu-button,
+  .goog-toolbar-combo-button,
+  .goog-toolbar-select,
+  .goog-flat-menu-button,
+  .docs-toolbar-button,
+  .docs-toolbar-menu-button,
+  .docs-toolbar-select,
+  .docs-material-gm-select,
+  .docs-toolbar-input,
+  .docs-gm3-icon-button,
+  [role="combobox"]
+) {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  color: var(--gdt-control-text) !important;
+  outline: none !important;
+}
+
+html[data-gdt-app="docs"][data-gdt-dark="on"] body.docs-gm #docs-chrome :is(
+  .goog-toolbar-button-outer-box,
+  .goog-toolbar-button-inner-box,
+  .goog-toolbar-menu-button-outer-box,
+  .goog-toolbar-menu-button-inner-box,
+  .goog-toolbar-combo-button-outer-box,
+  .goog-toolbar-combo-button-inner-box,
+  .goog-toolbar-menu-button-caption,
+  .goog-toolbar-combo-button-caption,
+  .goog-toolbar-combo-button-input
+) {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  color: inherit !important;
+}
+
+html[data-gdt-app="docs"][data-gdt-dark="on"] body.docs-gm #docs-chrome :is(
+  .goog-toolbar-button-hover,
+  .goog-toolbar-menu-button-hover,
+  .goog-toolbar-combo-button-hover,
+  .goog-toolbar-menu-button-open,
+  .goog-flat-menu-button-hover,
+  .docs-toolbar-button:hover,
+  .docs-toolbar-menu-button:hover,
+  .docs-toolbar-select:hover,
+  .docs-material-gm-select:hover,
+  .docs-gm3-icon-button:hover,
+  [role="combobox"]:hover
+) {
+  background: var(--gdt-control-hover) !important;
+  border-color: transparent !important;
+}
+
+html[data-gdt-app="docs"][data-gdt-dark="on"] body.docs-gm #docs-chrome :is(
+  .goog-toolbar-button-active,
+  .goog-toolbar-button-checked,
+  .goog-toolbar-toggle-button-checked,
+  .docs-gm3-icon-button[aria-pressed="true"],
+  .docs-toolbar-button[aria-pressed="true"]
+) {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+html[data-gdt-app="docs"][data-gdt-dark="on"] body.docs-gm #docs-chrome :is(
+  .goog-toolbar-separator,
+  .docs-toolbar-separator,
+  .docs-toolbar-small-separator,
+  .docs-toolbar-inset-separator
+) {
+  background: var(--gdt-control-line) !important;
+  border-color: var(--gdt-control-line) !important;
+}
+
+html[data-gdt-app="docs"][data-gdt-dark="on"] body.docs-gm #docs-chrome :is(
+  .docs-icon-img,
+  .docs-icon-img-container
+) {
+  background-color: transparent !important;
+  border-color: transparent !important;
+  filter: var(--gdt-icon-filter) !important;
+  opacity: 1 !important;
+}
+
+html[data-gdt-app="docs"][data-gdt-dark="on"] body.docs-gm #docs-chrome .docs-icon-masked-image {
+  background-color: var(--gdt-control-text) !important;
+  color: var(--gdt-control-text) !important;
+  filter: none !important;
+  opacity: 1 !important;
+}
+
+html[data-gdt-app="docs"][data-gdt-dark="on"] body.docs-gm :is(
+  .goog-menu,
+  .goog-popup,
+  .docs-dialog,
+  .docs-bubble,
+  .docos,
+  .docos-sidebar,
+  .docs-sidebar,
+  .docs-sidebars,
+  .docs-revisions-sidebar,
+  .docs-outline-pane,
+  .docs-companion-app-switcher-container,
+  .companion-app-switcher-container
+) :is(.docs-icon-img, .docs-icon-img-container) {
+  background-color: transparent !important;
+  filter: var(--gdt-icon-filter) !important;
+  opacity: 1 !important;
+}
+
+html[data-gdt-app="docs"][data-gdt-dark="on"] body.docs-gm :is(
+  .goog-menu,
+  .goog-popup,
+  .docs-dialog,
+  .docs-bubble,
+  .docos,
+  .docos-sidebar,
+  .docs-sidebar,
+  .docs-sidebars,
+  .docs-revisions-sidebar,
+  .docs-outline-pane,
+  .docs-companion-app-switcher-container,
+  .companion-app-switcher-container
+) .docs-icon-masked-image {
+  background-color: var(--gdt-control-text) !important;
+  color: var(--gdt-control-text) !important;
+  filter: none !important;
+  opacity: 1 !important;
+}
+
+html[data-gdt-app="docs"][data-gdt-dark="on"] body.docs-gm #docs-chrome :is(
+  .goog-toolbar-button-disabled,
+  .goog-toolbar-menu-button-disabled,
+  .goog-flat-menu-button-disabled,
+  .docs-gm3-button-disabled,
+  .jfk-button-disabled,
+  [aria-disabled="true"]
+) {
+  background: transparent !important;
+  border-color: transparent !important;
+  color: var(--gdt-control-muted) !important;
+  opacity: 0.68 !important;
+}
+
+html[data-gdt-app="docs"][data-gdt-dark="on"] body.docs-gm #docs-chrome :is(
+  .goog-toolbar-button-disabled,
+  .goog-toolbar-menu-button-disabled,
+  .goog-flat-menu-button-disabled,
+  .docs-gm3-button-disabled,
+  .jfk-button-disabled,
+  [aria-disabled="true"]
+) :is(.docs-icon-img, .docs-icon-img-container) {
+  filter: var(--gdt-icon-disabled-filter) !important;
+}
+
+html[data-gdt-app="docs"][data-gdt-dark="on"] body.docs-gm #docs-chrome :is(
+  #docs-revisions-appbarbutton,
+  #docs-docos-commentsbutton,
+  #docs-meet-in-editors-entrypointbutton,
+  #docs-star,
+  #docs-folder,
+  #docs-save-indicator-badge,
+  .docs-titlebar-button,
+  .docs-titlebar-badge
+) {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  color: var(--gdt-control-text) !important;
+  opacity: 1 !important;
+}
+
+html[data-gdt-app="docs"][data-gdt-dark="on"] body.docs-gm #docs-chrome :is(
+  #docs-revisions-appbarbutton,
+  #docs-docos-commentsbutton,
+  #docs-meet-in-editors-entrypointbutton,
+  #docs-star,
+  #docs-folder,
+  #docs-save-indicator-badge,
+  .docs-titlebar-button,
+  .docs-titlebar-badge
+):hover {
+  background: var(--gdt-control-hover) !important;
+}
+
+html[data-gdt-app="docs"][data-gdt-dark="on"] body.docs-gm #docs-titlebar-share-client-button {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+html[data-gdt-app="docs"][data-gdt-dark="on"] body.docs-gm #docs-titlebar-share-client-button > :is(
+  .scb-button,
+  .scb-split-button,
+  #scb-quick-actions-menu-button
+) {
+  background: var(--gdt-share) !important;
+  border-color: var(--gdt-share-line) !important;
+  box-shadow: none !important;
+  color: #eaf2ff !important;
+  opacity: 1 !important;
+}
+
+html[data-gdt-app="docs"][data-gdt-dark="on"] body.docs-gm #docs-titlebar-share-client-button > :is(
+  .scb-button,
+  .scb-split-button,
+  #scb-quick-actions-menu-button
+):hover {
+  background: var(--gdt-share-hover) !important;
+}
+
+html[data-gdt-app="docs"][data-gdt-dark="on"] body.docs-gm #docs-titlebar-share-client-button > :is(
+  .scb-button,
+  .scb-split-button,
+  #scb-quick-actions-menu-button
+) :is(.scb-button-icon, .goog-flat-menu-button-caption, .goog-flat-menu-button-dropdown) {
+  color: #eaf2ff !important;
+  opacity: 1 !important;
+}
+
+html[data-gdt-app="docs"][data-gdt-dark="on"] body.docs-gm #docs-titlebar-share-client-button .scb-button-icon {
+  background-color: #eaf2ff !important;
+}
+
+html[data-gdt-app="docs"][data-gdt-dark="on"] body.docs-gm #docs-titlebar-share-client-button .goog-flat-menu-button-dropdown {
+  border-top-color: #eaf2ff !important;
+  border-bottom-color: #eaf2ff !important;
+}
+
+html[data-gdt-app="docs"][data-gdt-dark="on"] body.docs-gm #docs-branding-logo-link {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+html[data-gdt-app="docs"][data-gdt-dark="on"] body.docs-gm #docs-branding-logo-link * {
+  filter: none !important;
+}
