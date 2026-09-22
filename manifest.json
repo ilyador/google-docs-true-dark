@@ -2,13 +2,9 @@
   "manifest_version": 3,
   "name": "Google Docs & Sheets True Dark",
   "short_name": "True Dark",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "System-aware dark mode for Google Docs and Sheets with semantic color mapping and untouched images.",
   "minimum_chrome_version": "120",
-  "host_permissions": [
-    "https://docs.google.com/document/*",
-    "https://docs.google.com/spreadsheets/*"
-  ],
   "content_scripts": [
     {
       "matches": [
@@ -31,6 +27,13 @@
       "matches": ["https://docs.google.com/spreadsheets/*"],
       "css": ["src/sheets-dark.css"],
       "js": ["src/theme-controller.js"],
+      "run_at": "document_start",
+      "all_frames": true
+    },
+    {
+      "matches": ["https://docs.google.com/drivesharing/*"],
+      "css": ["src/share-dark.css"],
+      "js": ["src/share-controller.js"],
       "run_at": "document_start",
       "all_frames": true
     }

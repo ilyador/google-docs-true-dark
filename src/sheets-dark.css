@@ -377,6 +377,79 @@ html[data-gdt-app="sheets"][data-gdt-dark="on"] :is(
   caret-color: var(--gdt-accent) !important;
 }
 
+/* Sheets creates this editor outside the grid and writes light colors inline. */
+html[data-gdt-app="sheets"][data-gdt-dark="on"] .input-box:has(> #waffle-rich-text-editor) {
+  background: var(--gdt-grid-bg) !important;
+  color: var(--gdt-text) !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] #waffle-rich-text-editor {
+  background: transparent !important;
+  color: var(--gdt-text) !important;
+  caret-color: var(--gdt-accent) !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] #waffle-rich-text-editor :is(
+  [style^="color:#000"],
+  [style*=";color:#000"],
+  [style^="color: rgb(0, 0, 0)"],
+  [style*="; color: rgb(0, 0, 0)"],
+  [style^="color:#202124"],
+  [style*=";color:#202124"]
+) {
+  color: var(--gdt-text) !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] :is(
+  #waffle-rich-text-editor .default-formula-text-color,
+  .formula-content > .default-formula-text-color
+) {
+  color: var(--gdt-text) !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] :is(
+  #waffle-rich-text-editor .match-paren,
+  .formula-content > .match-paren
+) {
+  background: var(--gdt-hover) !important;
+  color: var(--gdt-text) !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] :is(
+  .waffle-formula-preview-decorator,
+  .waffle-ac-renderer,
+  .waffle-arguments-help-popup
+) {
+  background: var(--gdt-surface-raised) !important;
+  color: var(--gdt-text) !important;
+  border-color: var(--gdt-line-strong) !important;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.4) !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] .waffle-formula-preview-result {
+  color: #a5c5ff !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] :is(
+  .waffle-formula-preview-button,
+  .waffle-function-autocomplete-row-description,
+  .waffle-arguments-help-section-title
+) {
+  color: var(--gdt-text-muted) !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] :is(
+  .waffle-ac-active,
+  .waffle-arguments-help-parameter-active
+) {
+  background: var(--gdt-hover) !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] .waffle-arguments-help-title {
+  background: var(--gdt-surface-raised) !important;
+  color: var(--gdt-text) !important;
+}
+
 html[data-gdt-app="sheets"][data-gdt-dark="on"] :is(
   .formula-bar-separator,
   #formula-bar-dragger,
@@ -536,7 +609,6 @@ html[data-gdt-app="sheets"][data-gdt-dark="on"] .docs-revisions-tile :is(
 html[data-gdt-app="sheets"][data-gdt-dark="on"] :is(
   .goog-menu,
   .goog-menu-vertical,
-  .goog-submenu,
   .goog-palette,
   .goog-popup,
   .docs-dialog,
@@ -562,6 +634,14 @@ html[data-gdt-app="sheets"][data-gdt-dark="on"] :is(
 ) {
   background: transparent !important;
   color: var(--gdt-text) !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] .goog-menu :is(
+  .goog-submenu-arrow,
+  .goog-menuitem-accel
+) {
+  color: var(--gdt-text-muted) !important;
+  opacity: 1 !important;
 }
 
 html[data-gdt-app="sheets"][data-gdt-dark="on"] :is(

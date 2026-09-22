@@ -31,6 +31,12 @@
       .sheet-tabs { position: absolute; z-index: 4; right: 0; bottom: 0; left: 0; height: 42px; padding: 0 14px; border-top: 1px solid #dadce0; background: #fff; }
       .docs-sheet-tab { padding: 8px 14px; border-radius: 4px; }
       .docs-sheet-active-tab { background: #dde3ea; color: #0b57d0; }
+      .input-box { position: absolute; z-index: 5; top: 130px; left: 288px; width: 260px; padding: 2px 4px; border: 2px solid #9bbdff; }
+      #waffle-rich-text-editor { min-height: 24px; outline: none; }
+      .formula-input-box { top: 280px; }
+      .waffle-formula-preview-decorator { position: absolute; z-index: 6; top: 242px; left: 288px; display: none; gap: 10px; padding: 7px 10px; background: #fff; border: 1px solid #dadce0; }
+      .waffle-formula-preview-result { color: #1a73e8; }
+      .waffle-formula-preview-close { color: #9aa0a6; }
       #docs-titlebar-share-client-button { display: inline-flex; }
       #docs-titlebar-share-client-button > div { padding: 9px 14px; background: #c2e7ff; color: #004a77; }
       .scb-split-button { border-radius: 100px 0 0 100px; }
@@ -84,6 +90,10 @@
             <div class="grid4-inner-container"></div>
           </div>
         </div>
+        <div class="input-box" style="color: rgb(0, 0, 0); background-color: rgb(255, 255, 255);">
+          <div id="waffle-rich-text-editor" class="cell-input editable" contenteditable="true" style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);"><span style="font-size:15px;color:#000000;">Answer this question truthfully</span></div>
+        </div>
+        <div class="waffle-formula-preview-decorator"><span class="waffle-formula-preview-result">903</span><span class="waffle-formula-preview-close waffle-formula-preview-button">&times;</span></div>
         <div class="sheet-tabs docs-sheet-container">
           <span>+</span><span class="docs-sheet-tab docs-sheet-active-tab">Quests</span><span class="docs-sheet-tab">Events</span><span class="docs-sheet-tab">Spells</span>
         </div>
@@ -102,7 +112,17 @@
     <script src="../../src/docs-canvas.js"></script>
     <script src="../../src/theme-controller.js"></script>
     <script>
+      if (new URLSearchParams(location.search).has("gdt_force_light")) {
+        document.documentElement.setAttribute("data-gdt-dark", "off");
+        document.documentElement.setAttribute("data-gdt-page-dark", "0");
+        document.dispatchEvent(new CustomEvent("gdt-dark-mode-change", { detail: { dark: false } }));
+      }
       const canvas = document.getElementById("sheet-canvas");
+      if (new URLSearchParams(location.search).has("formula")) {
+        document.querySelector(".input-box").classList.add("formula-input-box");
+        document.getElementById("waffle-rich-text-editor").innerHTML = '<span class="default-formula-text-color">=SUM(</span><span style="color:#e89100;">B105:B107</span><span class="default-formula-text-color">)</span>';
+        document.querySelector(".waffle-formula-preview-decorator").style.display = "flex";
+      }
       const context = canvas.getContext("2d");
       const rowHeight = 31;
       const columnWidths = [54, 220, 260, 260, 220, 220];
