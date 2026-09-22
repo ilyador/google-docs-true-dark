@@ -46,11 +46,41 @@ html[data-gdt-share-dark="on"] .yid0mf {
   background-color: var(--gdt-share-field) !important;
 }
 
-html[data-gdt-share-dark="on"] body * {
+html[data-gdt-share-dark="on"] [data-gdt-share-surface="panel"] {
+  background-color: var(--gdt-share-panel) !important;
+  border-color: var(--gdt-share-line) !important;
+}
+
+html[data-gdt-share-dark="on"] [data-gdt-share-surface="field"] {
+  background-color: var(--gdt-share-field) !important;
+  border-color: var(--gdt-share-line) !important;
+}
+
+html[data-gdt-share-dark="on"] [data-gdt-share-surface="control"] {
+  background-color: var(--gdt-share-panel) !important;
+  border-color: var(--gdt-share-line) !important;
+}
+
+html[data-gdt-share-dark="on"] :is(
+  [role="dialog"],
+  .GmCard,
+  .KC1dQ,
+  [data-gdt-share-surface]
+) * {
   color: var(--gdt-share-text) !important;
 }
 
-html[data-gdt-share-dark="on"] :is(small, [aria-disabled="true"], [disabled]) {
+html[data-gdt-share-dark="on"] :is(
+  [role="dialog"],
+  .GmCard,
+  .KC1dQ,
+  [data-gdt-share-surface]
+) :is(small, [aria-disabled="true"], [disabled]) {
+  color: var(--gdt-share-muted) !important;
+}
+
+html[data-gdt-share-dark="on"] [data-gdt-share-surface="placeholder"] {
+  background-color: var(--gdt-share-field) !important;
   color: var(--gdt-share-muted) !important;
 }
 

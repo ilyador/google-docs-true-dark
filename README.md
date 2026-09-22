@@ -22,8 +22,11 @@ The extension follows your OS appearance with `prefers-color-scheme`. It runs on
 - Patches 2D canvas drawing calls in the page's main JavaScript world at `document_start`, so Docs and Sheets colors are mapped before Google paints them.
 - Keeps a bounded replay log for each canvas tile so switching back to light mode repaints existing canvas pixels with the original light colors.
 - Leaves images, videos, charts rendered through `drawImage`, and background images uninverted.
-- Restricts inline color adaptation to the Docs editor. It does not rewrite Sheets cell-editor styles, avoiding accidental persistence of dark-mode colors into sheet data.
-- In light mode, dark CSS stops matching, scoped Docs inline edits are restored, and the canvas hook stops recoloring new draw calls.
+- Generates Docs editor color rules in a separate stylesheet, keyed to existing inline styles. It does not rewrite the document's inline colors or Sheets cell-editor styles.
+- In light mode, dark CSS stops matching, generated Docs color rules are removed, and the canvas hook stops recoloring new draw calls.
+- Themes nested Share panels even when Google does not give the visible panel a dialog role.
+
+The extension changes browser rendering only. It cannot change how the native mobile Docs or Sheets apps display explicitly formatted text.
 
 ## Local Smoke Test
 
@@ -35,4 +38,6 @@ Open these files in Chrome:
 
 `/Users/admin.ilya.dorman/Dev/google-docs-true-dark/test/share-fixture.html`
 
-The fixtures cover Docs/Sheets chrome, semantic canvas colors, the active cell and formula preview, sidebars, the Share panel, and an image drawn without recoloring. Add `?gdt_force_dark=1` to the Docs or Sheets fixture to force dark mode, `&formula=1` to the Sheets fixture to show formula editing, or `?dark=1` to the Share fixture. Light-mode fixtures omit those dark-mode parameters.
+The fixtures cover Docs/Sheets chrome, semantic canvas colors, the active cell and formula preview, sidebars, the nested Share panel, and an image drawn without recoloring. Add `?gdt_force_dark=1` to the Docs or Sheets fixture to force dark mode, `&formula=1` to the Sheets fixture to show formula editing, or `?dark=1` to the Share fixture. Light-mode fixtures omit those dark-mode parameters.
+
+Run `node test/verify.mjs` for static checks. Set `GDT_CHROME` to a Chrome executable and run `node test/browser-verify.mjs` for isolated headless Chrome checks of Docs source-style preservation, dark/light rollback, and the nested Share dialog.

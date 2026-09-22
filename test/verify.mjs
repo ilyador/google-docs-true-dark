@@ -25,7 +25,11 @@ assert(!controller.includes("[class*='button'"));
 assert(!controller.includes("[class*=\"button\""));
 assert(!controller.includes("restyleChrome"));
 assert.match(controller, /app === "docs"/);
-assert.match(controller, /restoreInlineStyles\(\)/);
+assert.match(controller, /function registerColorRule\(element\)/);
+assert.match(controller, /colorStyle\.sheet\.insertRule\(rule\)/);
+assert.match(controller, /function clearColorRules\(\)/);
+assert(!controller.includes("element.style.setProperty"));
+assert(!controller.includes("styleMemory"));
 
 assert.match(canvas, /patchRecordedMethod\(proto, originals, "drawImage", null\)/);
 assert(!canvas.includes('patchMethod(proto, originals, "drawImage"'));
@@ -52,17 +56,24 @@ assert.match(
 );
 assert.match(shareController, /\(document\|spreadsheets\)/);
 assert.match(shareController, /data-gdt-share-dark/);
+assert.match(shareController, /data-gdt-share-surface/);
 assert.match(shareCss, /html\[data-gdt-share-dark="on"\]/);
+assert.match(shareCss, /\[data-gdt-share-surface="panel"\]/);
+assert(!shareCss.includes('html[data-gdt-share-dark="on"] body *'));
 
 function runShareController(referrer, frameUrl, inFrame = true) {
   const attributes = new Map();
   const media = { matches: true, addEventListener(_type, listener) { this.listener = listener; } };
-  const window = { top: inFrame ? {} : null, matchMedia: () => media };
+  const window = { top: inFrame ? {} : null, matchMedia: () => media, addEventListener() {} };
   if (!inFrame) window.top = window;
   vm.runInNewContext(shareController, {
     window,
     location: new URL(frameUrl),
-    document: { referrer, documentElement: { setAttribute: (name, value) => attributes.set(name, value) } },
+    document: {
+      referrer,
+      documentElement: { setAttribute: (name, value) => attributes.set(name, value) },
+      addEventListener() {}
+    },
     URL,
     URLSearchParams
   });

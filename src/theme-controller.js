@@ -16,15 +16,26 @@
   const FORCE_PARAM = "gdt_force_dark";
   const DOC_EDITOR_SELECTOR = "#docs-editor, #docs-editor-container, .kix-appview-editor";
   const MAX_INLINE_ELEMENTS_PER_SCAN = 5000;
+  const MAX_COLOR_RULES = 10000;
+  const DOC_COLOR_PROPERTIES = [
+    ["color", "foreground"],
+    ["background-color", "background"],
+    ["border-color", "border"],
+    ["border-top-color", "border"],
+    ["border-right-color", "border"],
+    ["border-bottom-color", "border"],
+    ["border-left-color", "border"],
+    ["outline-color", "border"],
+    ["text-decoration-color", "foreground"]
+  ];
   const MEDIA = window.matchMedia("(prefers-color-scheme: dark)");
   const app = location.pathname.includes("/spreadsheets/") ? "sheets" : "docs";
   const colorTools = createColorTools();
-  const touchedElements = new Set();
-  const styleMemory = new WeakMap();
+  const colorRules = new Set();
   const scanQueue = new Set();
   let darkEnabled = false;
   let scanFrame = 0;
-  let observer = null;
+  let colorStyle = null;
 
   install();
 
@@ -38,7 +49,7 @@
     }
 
     if (app === "docs" && document.documentElement) {
-      observer = new MutationObserver(handleMutations);
+      const observer = new MutationObserver(handleMutations);
       observer.observe(document.documentElement, {
         childList: true,
         subtree: true,
@@ -89,7 +100,7 @@
         scheduleScan(root);
       }
     } else {
-      restoreInlineStyles();
+      clearColorRules();
     }
   }
 
@@ -170,7 +181,7 @@
       }
 
       if (scope instanceof HTMLElement && scope.hasAttribute("style") && !shouldSkipElement(scope)) {
-        adaptInlineElement(scope);
+        registerColorRule(scope);
         processed += 1;
       }
 
@@ -179,7 +190,7 @@
           break;
         }
         if (element instanceof HTMLElement && !shouldSkipElement(element)) {
-          adaptInlineElement(element);
+          registerColorRule(element);
           processed += 1;
         }
       }
@@ -203,66 +214,51 @@
       Boolean(element.closest("svg, [data-gdt-skip]"));
   }
 
-  function adaptInlineElement(element) {
-    const properties = [
-      ["color", "foreground"],
-      ["background-color", "background"],
-      ["border-color", "border"],
-      ["border-top-color", "border"],
-      ["border-right-color", "border"],
-      ["border-bottom-color", "border"],
-      ["border-left-color", "border"],
-      ["outline-color", "border"],
-      ["text-decoration-color", "foreground"]
-    ];
-    let memory = styleMemory.get(element);
+  function registerColorRule(element) {
+    const styleText = element.getAttribute("style");
+    if (!styleText || colorRules.has(styleText) || colorRules.size >= MAX_COLOR_RULES) {
+      return;
+    }
 
-    for (const [property, role] of properties) {
+    const declarations = [];
+    for (const [property, role] of DOC_COLOR_PROPERTIES) {
       const current = element.style.getPropertyValue(property);
       if (!current) {
         continue;
       }
-
-      const previous = memory && memory[property];
-      if (previous && current === previous.lastApplied) {
-        continue;
-      }
-
       const adapted = colorTools.adaptCssColor(current, role);
       if (!adapted || adapted === current) {
         continue;
       }
+      declarations.push(`${property}: ${adapted} !important`);
+    }
 
-      if (!memory) {
-        memory = Object.create(null);
-        styleMemory.set(element, memory);
-      }
+    if (!declarations.length) {
+      return;
+    }
 
-      memory[property] = {
-        original: current,
-        lastApplied: adapted,
-        priority: element.style.getPropertyPriority(property)
-      };
-      touchedElements.add(element);
-      element.style.setProperty(property, adapted, memory[property].priority);
+    if (!colorStyle) {
+      colorStyle = document.createElement("style");
+      colorStyle.setAttribute("data-gdt-doc-colors", "");
+      (document.head || document.documentElement).appendChild(colorStyle);
+    }
+
+    const scope = ":is(#docs-editor, #docs-editor-container, .kix-appview-editor)";
+    const target = `[style=${CSS.escape(styleText)}]:not(:is(img, picture, video, canvas, svg, svg *, iframe, object, embed, [data-gdt-skip], [data-gdt-skip] *))`;
+    const root = 'html[data-gdt-app="docs"][data-gdt-dark="on"]';
+    const rule = `${root} ${scope}${target}, ${root} ${scope} ${target} { ${declarations.join("; ")} }`;
+    try {
+      colorStyle.sheet.insertRule(rule);
+      colorRules.add(styleText);
+    } catch (_error) {
+      // Ignore malformed source styles without changing the editor DOM.
     }
   }
 
-  function restoreInlineStyles() {
-    for (const element of touchedElements) {
-      const memory = styleMemory.get(element);
-      if (!memory || !element.isConnected) {
-        continue;
-      }
-
-      for (const [property, record] of Object.entries(memory)) {
-        if (element.style.getPropertyValue(property) === record.lastApplied) {
-          element.style.setProperty(property, record.original, record.priority || "");
-        }
-      }
-      styleMemory.delete(element);
-    }
-    touchedElements.clear();
+  function clearColorRules() {
+    colorStyle?.remove();
+    colorStyle = null;
+    colorRules.clear();
   }
 
   function createColorTools() {
