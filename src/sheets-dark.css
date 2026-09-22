@@ -638,10 +638,15 @@ html[data-gdt-app="sheets"][data-gdt-dark="on"] :is(
 
 html[data-gdt-app="sheets"][data-gdt-dark="on"] .goog-menu :is(
   .goog-submenu-arrow,
-  .goog-menuitem-accel
+  .goog-menuitem-accel,
+  .goog-menuitem-accel *
 ) {
   color: var(--gdt-text-muted) !important;
   opacity: 1 !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] .goog-menu .goog-submenu-arrow {
+  filter: var(--gdt-icon-filter) !important;
 }
 
 html[data-gdt-app="sheets"][data-gdt-dark="on"] :is(
@@ -776,20 +781,23 @@ html[data-gdt-app="sheets"][data-gdt-dark="on"] a {
 }
 
 html[data-gdt-app="sheets"][data-gdt-dark="on"] ::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
+  width: 10px;
+  height: 10px;
 }
 
-html[data-gdt-app="sheets"][data-gdt-dark="on"] ::-webkit-scrollbar-track {
-  background: #10141b;
+html[data-gdt-app="sheets"][data-gdt-dark="on"] ::-webkit-scrollbar-track,
+html[data-gdt-app="sheets"][data-gdt-dark="on"] ::-webkit-scrollbar-corner {
+  background: transparent !important;
 }
 
 html[data-gdt-app="sheets"][data-gdt-dark="on"] ::-webkit-scrollbar-thumb {
-  background: #3a4350;
-  border: 3px solid #10141b;
+  background: #596575;
+  border: 2px solid transparent;
+  background-clip: padding-box;
   border-radius: 999px;
 }
 
 html[data-gdt-app="sheets"][data-gdt-dark="on"] ::-webkit-scrollbar-thumb:hover {
-  background: #4a5666;
+  background: #758296;
+  background-clip: padding-box;
 }

@@ -15,6 +15,9 @@
       input { box-sizing: border-box; width: 100%; padding: 12px; border: 1px solid #747775; border-radius: 4px; background: #fff; color: #202124; }
       .fixture-mail-field { position: relative; }
       .fixture-mail-placeholder { position: absolute; top: 12px; left: 12px; background: #fff; color: #5f6368; white-space: nowrap; }
+      .fixture-pseudo-field { position: fixed; left: -1000px; top: 0; width: 500px; min-height: 46px; padding: 8px 12px; background: #fff; }
+      .fixture-pseudo-field .YMNIz::after { content: "Add people, groups, spaces, and calendar events"; display: inline-block; background: #fff; color: #5f6368; }
+      .fixture-nested-placeholder { width: 350px; height: 28px; padding: 3px 4px; background: #fff; color: #5f6368; }
       small { color: #5f6368; }
       button { padding: 8px 18px; border: 1px solid #747775; border-radius: 18px; background: transparent; color: #1a73e8; }
       .primary { background: #0b57d0; color: white; border-color: #0b57d0; }
@@ -29,6 +32,9 @@
         <div class="fixture-mail-field" role="combobox" aria-label="Add people">
           <input aria-label="Add people">
           <span class="fixture-mail-placeholder">Add people, groups, spaces, and calendar events</span>
+        </div>
+        <div class="fixture-pseudo-field yid0mf" role="combobox" aria-label="Add people alternative">
+          <div><div><div class="fixture-nested-placeholder YMNIz"></div></div></div>
         </div>
         <h3>People with access</h3>
         <div class="row"><span>Ilya Dorman (you)<br><small>Owner</small></span><small>Owner</small></div>

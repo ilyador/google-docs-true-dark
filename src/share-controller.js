@@ -30,7 +30,7 @@
   }
 
   const media = window.matchMedia("(prefers-color-scheme: dark)");
-  const isDark = () => fixture ? params.has("dark") : media.matches;
+  const isDark = () => fixture && params.has("dark") ? true : media.matches;
   const surfaceAttribute = "data-gdt-share-surface";
   const markedSurfaces = new Set();
   let scanFrame = 0;
@@ -60,12 +60,11 @@
           continue;
         }
         const control = element.matches("button, [role='button']");
-        const fieldText = element.matches("span, label");
-        if (fieldText && !isEditableFieldText(element)) {
-          continue;
-        }
+        const fieldHost = element.closest(".yid0mf, [role='combobox'], label");
+        const fieldText = !control && element.matches("div, span, label") &&
+          fieldHost && fieldHost !== element;
         const rect = element.getBoundingClientRect();
-        if (rect.width < (fieldText ? 80 : control ? 48 : 200) ||
+        if (rect.width < (fieldText ? 40 : control ? 48 : 200) ||
             rect.height < (fieldText ? 12 : control ? 24 : 32)) {
           continue;
         }
@@ -77,19 +76,6 @@
         markedSurfaces.add(element);
       }
     });
-  }
-
-  function isEditableFieldText(element) {
-    const editable = "input, textarea, [role='combobox'], [contenteditable='true']";
-    if (element.matches("label") && element.querySelector(editable)) {
-      return true;
-    }
-    for (let parent = element.parentElement, depth = 0; parent && depth < 2; parent = parent.parentElement, depth += 1) {
-      if (parent.matches("label, [role='combobox']") || parent.querySelector(editable)) {
-        return true;
-      }
-    }
-    return false;
   }
 
   function isPaleSurface(value) {

@@ -46,6 +46,12 @@ html[data-gdt-share-dark="on"] .yid0mf {
   background-color: var(--gdt-share-field) !important;
 }
 
+html[data-gdt-share-dark="on"] .yid0mf .YMNIz::after,
+html[data-gdt-share-dark="on"] .yid0mf .boqDrivePeopleWebMultiselectInputchipWrapper::after {
+  background-color: var(--gdt-share-field) !important;
+  color: var(--gdt-share-muted) !important;
+}
+
 html[data-gdt-share-dark="on"] [data-gdt-share-surface="panel"] {
   background-color: var(--gdt-share-panel) !important;
   border-color: var(--gdt-share-line) !important;
@@ -80,6 +86,12 @@ html[data-gdt-share-dark="on"] :is(
 }
 
 html[data-gdt-share-dark="on"] [data-gdt-share-surface="placeholder"] {
+  background-color: var(--gdt-share-field) !important;
+  color: var(--gdt-share-muted) !important;
+}
+
+html[data-gdt-share-dark="on"] [data-gdt-share-surface="placeholder"]::before,
+html[data-gdt-share-dark="on"] [data-gdt-share-surface="placeholder"]::after {
   background-color: var(--gdt-share-field) !important;
   color: var(--gdt-share-muted) !important;
 }

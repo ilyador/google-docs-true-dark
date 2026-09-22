@@ -6,6 +6,7 @@ const manifest = JSON.parse(fs.readFileSync(new URL("../manifest.json", import.m
 const controller = fs.readFileSync(new URL("../src/theme-controller.js", import.meta.url), "utf8");
 const canvas = fs.readFileSync(new URL("../src/docs-canvas.js", import.meta.url), "utf8");
 const docsUi = fs.readFileSync(new URL("../src/docs-ui.css", import.meta.url), "utf8");
+const docsCss = fs.readFileSync(new URL("../src/docs-dark.css", import.meta.url), "utf8");
 const sheets = fs.readFileSync(new URL("../src/sheets-dark.css", import.meta.url), "utf8");
 const shareController = fs.readFileSync(new URL("../src/share-controller.js", import.meta.url), "utf8");
 const shareCss = fs.readFileSync(new URL("../src/share-dark.css", import.meta.url), "utf8");
@@ -40,6 +41,11 @@ assert.match(canvas, /isSheets && isNeutral && luminance > 0\.30/);
 
 assert.match(docsUi, /#docs-titlebar-share-client-button\s*\{/);
 assert.match(docsUi, /#docs-titlebar-share-client-button > :is/);
+assert.match(docsUi, /\.left-sidebar-container/);
+assert.match(docsUi, /\[aria-selected="true"\]/);
+assert.match(docsCss, /\.kix-lineview-decorations div/);
+assert.match(docsCss, /text-decoration-color: var\(--gdt-text-muted\)/);
+assert(!docsCss.includes("border: 3px solid #10141b"));
 assert.match(sheets, /#docs-branding-logo-link \*/);
 assert.match(sheets, /#waffle-rich-text-editor/);
 assert.match(sheets, /\.input-box:has\(> #waffle-rich-text-editor\)/);
@@ -50,6 +56,7 @@ assert(!sheets.includes("  .goog-submenu,\n"));
 assert.match(sheets, /\.goog-submenu-arrow/);
 assert.match(sheets, /\.waffle-formula-preview-decorator/);
 assert(!sheets.includes("canvas {\n  filter: invert"));
+assert(!sheets.includes("border: 3px solid #10141b"));
 assert.match(
   sheets,
   /:is\(\s*\.grid-table-container,[\s\S]*?\.grid4-inner-container,[\s\S]*?\.waffle-background-container\s*\)\s*\{\s*background: transparent !important;/
@@ -59,6 +66,7 @@ assert.match(shareController, /data-gdt-share-dark/);
 assert.match(shareController, /data-gdt-share-surface/);
 assert.match(shareCss, /html\[data-gdt-share-dark="on"\]/);
 assert.match(shareCss, /\[data-gdt-share-surface="panel"\]/);
+assert.match(shareCss, /\.YMNIz::after/);
 assert(!shareCss.includes('html[data-gdt-share-dark="on"] body *'));
 
 function runShareController(referrer, frameUrl, inFrame = true) {

@@ -13,6 +13,8 @@ const profile = fs.mkdtempSync(path.join(os.tmpdir(), "gdt-chrome-verify-"));
 const browser = spawn(chrome, [
   "--headless=new",
   "--disable-gpu",
+  "--password-store=basic",
+  "--use-mock-keychain",
   "--no-first-run",
   "--no-default-browser-check",
   `--user-data-dir=${profile}`,
@@ -112,6 +114,32 @@ try {
   assert.equal(darkDoc.color, "rgb(232, 236, 242)");
   assert.equal(darkDoc.page, "rgb(23, 27, 34)");
   assert.equal(darkDoc.imageFilter, "none");
+  const docsDetails = await evaluate(`(() => ({
+    selected: getComputedStyle(document.querySelector('.left-sidebar-container [aria-selected="true"]')).backgroundColor,
+    options: getComputedStyle(document.querySelector('[aria-label="Tab options"]')).backgroundColor,
+    icon: getComputedStyle(document.querySelector('[aria-label="Tab options"] path')).fill,
+    disabledBackground: getComputedStyle(document.querySelector('[aria-label="Back"]')).backgroundColor,
+    disabledOpacity: getComputedStyle(document.querySelector('[aria-label="Back"]')).opacity,
+    underline: getComputedStyle(document.querySelector('.fixture-underline')).textDecorationColor,
+    strike: getComputedStyle(document.querySelector('.fixture-strike')).textDecorationColor,
+    decoration: getComputedStyle(document.querySelector('.fixture-decoration-border')).borderBottomColor,
+    shortcut: getComputedStyle(document.querySelector('.goog-menuitem-accel')).color,
+    track: getComputedStyle(document.querySelector('.goog-menu'), '::-webkit-scrollbar-track').backgroundColor
+  }))()`);
+  assert.equal(docsDetails.selected, "rgb(48, 56, 70)");
+  assert.equal(docsDetails.options, "rgba(0, 0, 0, 0)");
+  assert.equal(docsDetails.icon, "rgb(220, 227, 237)");
+  assert.equal(docsDetails.disabledBackground, "rgba(0, 0, 0, 0)");
+  assert.equal(docsDetails.disabledOpacity, "0.68");
+  assert.equal(docsDetails.underline, "rgb(232, 236, 242)");
+  assert.equal(docsDetails.strike, "rgb(174, 183, 196)");
+  assert.equal(docsDetails.decoration, "rgb(174, 183, 196)");
+  assert.equal(docsDetails.shortcut, "rgb(174, 183, 196)");
+  assert.equal(docsDetails.track, "rgba(0, 0, 0, 0)");
+  const originalDecorationSources = await evaluate(`({
+    underline: document.querySelector('.fixture-underline').getAttribute('style'),
+    strike: document.querySelector('.fixture-strike').getAttribute('style')
+  })`);
   await screenshot("gdt-docs-dark-verify.png");
 
   const changedSource = await evaluate(`(() => {
@@ -134,6 +162,20 @@ try {
   assert.equal(lightDoc.source, changedSource);
   assert.equal(lightDoc.color, "rgb(60, 64, 67)");
   assert(lightDoc.rulesRemoved);
+  const lightDocsDetails = await evaluate(`(() => ({
+    selected: getComputedStyle(document.querySelector('.left-sidebar-container [aria-selected="true"]')).backgroundColor,
+    underline: getComputedStyle(document.querySelector('.fixture-underline')).textDecorationColor,
+    strike: getComputedStyle(document.querySelector('.fixture-strike')).textDecorationColor
+  }))()`);
+  assert.equal(lightDocsDetails.selected, "rgb(54, 95, 150)");
+  assert.equal(lightDocsDetails.underline, "rgb(32, 33, 36)");
+  assert.equal(lightDocsDetails.strike, "rgb(32, 33, 36)");
+  const lightDecorationSources = await evaluate(`({
+    underline: document.querySelector('.fixture-underline').getAttribute('style'),
+    strike: document.querySelector('.fixture-strike').getAttribute('style')
+  })`);
+  assert.deepEqual(lightDecorationSources, originalDecorationSources);
+  await screenshot("gdt-docs-light-verify.png");
 
   await send("Emulation.setEmulatedMedia", {
     features: [{ name: "prefers-color-scheme", value: "dark" }]
@@ -146,6 +188,9 @@ try {
       mode: document.documentElement.getAttribute('data-gdt-dark'),
       source: editor.getAttribute('style'),
       color: getComputedStyle(editor).color,
+      sidebar: getComputedStyle(document.querySelector('.docs-tiled-sidebar')).backgroundColor,
+      comment: getComputedStyle(document.querySelector('.docos-docoview')).backgroundColor,
+      imageFilter: getComputedStyle(document.querySelector('#sheet-image')).filter,
       docsRules: Boolean(document.querySelector('style[data-gdt-doc-colors]'))
     };
   })()`);
@@ -153,9 +198,51 @@ try {
   assert.equal(sheet.mode, "on");
   assert.equal(sheet.source, "background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);");
   assert.equal(sheet.color, "rgb(232, 236, 242)");
+  assert.equal(sheet.sidebar, "rgb(23, 26, 33)");
+  assert.equal(sheet.comment, "rgb(35, 42, 53)");
+  assert.equal(sheet.imageFilter, "none");
   assert.equal(sheet.docsRules, false);
+  const fontMenu = await evaluate(`(() => {
+    const menu = document.querySelector('.fixture-font-menu');
+    return {
+      background: getComputedStyle(menu).backgroundColor,
+      track: getComputedStyle(menu, '::-webkit-scrollbar-track').backgroundColor,
+      corner: getComputedStyle(menu, '::-webkit-scrollbar-corner').backgroundColor,
+      arrow: getComputedStyle(menu.querySelector('.goog-submenu-arrow')).color,
+      scrollable: menu.scrollHeight > menu.clientHeight
+    };
+  })()`);
+  assert.equal(fontMenu.background, "rgb(35, 42, 53)");
+  assert.equal(fontMenu.track, "rgba(0, 0, 0, 0)");
+  assert.equal(fontMenu.corner, "rgba(0, 0, 0, 0)");
+  assert.equal(fontMenu.arrow, "rgb(174, 183, 196)");
+  assert(fontMenu.scrollable);
+  await screenshot("gdt-sheets-font-menu-verify.png");
 
-  await navigate("share-fixture.html", "?dark=1");
+  await send("Emulation.setEmulatedMedia", {
+    features: [{ name: "prefers-color-scheme", value: "light" }]
+  });
+  await waitUntil(() => evaluate("document.documentElement.getAttribute('data-gdt-dark') === 'off'"), "Sheets light mode");
+  const lightSheet = await evaluate(`(() => {
+    const editor = document.querySelector('#waffle-rich-text-editor');
+    return {
+      source: editor.getAttribute('style'),
+      color: getComputedStyle(editor).color,
+      menu: getComputedStyle(document.querySelector('.fixture-font-menu')).backgroundColor,
+      sidebar: getComputedStyle(document.querySelector('.docs-tiled-sidebar')).backgroundColor
+    };
+  })()`);
+  assert.equal(lightSheet.source, sheet.source);
+  assert.equal(lightSheet.color, "rgb(0, 0, 0)");
+  assert.equal(lightSheet.menu, "rgb(255, 255, 255)");
+  assert.equal(lightSheet.sidebar, "rgb(240, 244, 249)");
+  await screenshot("gdt-sheets-light-verify.png");
+
+  await send("Emulation.setEmulatedMedia", {
+    features: [{ name: "prefers-color-scheme", value: "dark" }]
+  });
+
+  await navigate("share-fixture.html");
   await waitUntil(() => evaluate("document.querySelector('.fixture-share-panel')?.getAttribute('data-gdt-share-surface') === 'panel'"), "Share surface theme");
   const darkShare = await evaluate(`(() => ({
     panel: getComputedStyle(document.querySelector('.fixture-share-panel')).backgroundColor,
@@ -163,7 +250,9 @@ try {
     primary: getComputedStyle(document.querySelector('.primary')).backgroundColor,
     mailInput: getComputedStyle(document.querySelector('.fixture-mail-field input')).backgroundColor,
     mailPlaceholder: getComputedStyle(document.querySelector('.fixture-mail-placeholder')).backgroundColor,
-    mailPlaceholderColor: getComputedStyle(document.querySelector('.fixture-mail-placeholder')).color
+    mailPlaceholderColor: getComputedStyle(document.querySelector('.fixture-mail-placeholder')).color,
+    pseudoPlaceholder: getComputedStyle(document.querySelector('.YMNIz'), '::after').backgroundColor,
+    nestedPlaceholder: getComputedStyle(document.querySelector('.fixture-nested-placeholder')).backgroundColor
   }))()`);
   assert.equal(darkShare.panel, "rgb(32, 36, 45)");
   assert.equal(darkShare.title, "rgb(232, 236, 242)");
@@ -171,19 +260,31 @@ try {
   assert.equal(darkShare.mailInput, "rgb(23, 27, 34)");
   assert.equal(darkShare.mailPlaceholder, "rgb(23, 27, 34)");
   assert.equal(darkShare.mailPlaceholderColor, "rgb(174, 183, 196)");
+  assert.equal(darkShare.pseudoPlaceholder, "rgb(23, 27, 34)");
+  assert.equal(darkShare.nestedPlaceholder, "rgb(23, 27, 34)");
   await screenshot("gdt-share-dark-verify.png");
 
-  await navigate("share-fixture.html");
+  await send("Emulation.setEmulatedMedia", {
+    features: [{ name: "prefers-color-scheme", value: "light" }]
+  });
+  await waitUntil(() => evaluate("document.documentElement.getAttribute('data-gdt-share-dark') === 'off'"), "Share light mode");
   const lightShare = await evaluate(`(() => ({
     mode: document.documentElement.getAttribute('data-gdt-share-dark'),
     panel: getComputedStyle(document.querySelector('.fixture-share-panel')).backgroundColor,
     title: getComputedStyle(document.querySelector('h2')).color,
-    mailPlaceholder: getComputedStyle(document.querySelector('.fixture-mail-placeholder')).backgroundColor
+    mailPlaceholder: getComputedStyle(document.querySelector('.fixture-mail-placeholder')).backgroundColor,
+    pseudoPlaceholder: getComputedStyle(document.querySelector('.YMNIz'), '::after').backgroundColor,
+    nestedPlaceholder: getComputedStyle(document.querySelector('.fixture-nested-placeholder')).backgroundColor,
+    marked: document.querySelectorAll('[data-gdt-share-surface]').length
   }))()`);
   assert.equal(lightShare.mode, "off");
   assert.equal(lightShare.panel, "rgb(255, 255, 255)");
   assert.equal(lightShare.title, "rgb(32, 33, 36)");
   assert.equal(lightShare.mailPlaceholder, "rgb(255, 255, 255)");
+  assert.equal(lightShare.pseudoPlaceholder, "rgb(255, 255, 255)");
+  assert.equal(lightShare.nestedPlaceholder, "rgb(255, 255, 255)");
+  assert.equal(lightShare.marked, 0);
+  await screenshot("gdt-share-light-verify.png");
 
   console.log("Chrome dark/light rendering, Docs/Sheets source-style preservation, and nested Share checks passed.");
 } finally {

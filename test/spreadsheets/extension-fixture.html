@@ -41,6 +41,8 @@
       #docs-titlebar-share-client-button > div { padding: 9px 14px; background: #c2e7ff; color: #004a77; }
       .scb-split-button { border-radius: 100px 0 0 100px; }
       #scb-quick-actions-menu-button { border-radius: 0 100px 100px 0; }
+      .fixture-font-menu { position: absolute; z-index: 10; top: 120px; right: 350px; width: 270px; height: 420px; overflow-y: auto; border: 1px solid #dadce0; background: #fff; }
+      .fixture-font-menu .goog-menuitem { padding: 12px 20px; }
     </style>
   </head>
   <body class="docs-gm">
@@ -107,6 +109,15 @@
         <div class="docs-revisions-tile"><strong>Version history</strong><p>Today, 22:14</p></div>
       </aside>
     </main>
+
+    <div class="goog-menu fixture-font-menu" role="menu" aria-label="Font list">
+      <div class="goog-menuitem">More fonts <span class="goog-submenu-arrow">&#9656;</span></div><div class="goog-menuitem">Default (Arial)</div>
+      <div class="goog-menuitem">Open Sans</div><div class="goog-menuitem">Inconsolata</div>
+      <div class="goog-menuitem">Courier Prime</div><div class="goog-menuitem">Calibri</div>
+      <div class="goog-menuitem">Cormorant Garamond</div><div class="goog-menuitem">Georgia</div>
+      <div class="goog-menuitem">Impact</div><div class="goog-menuitem">Lato</div>
+      <div class="goog-menuitem">Lexend</div><div class="goog-menuitem">Montserrat</div>
+    </div>
 
     <img id="sheet-image" hidden alt="untouched image" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='60'%3E%3Crect width='120' height='60' fill='%23ff6b6b'/%3E%3Ccircle cx='88' cy='22' r='15' fill='%23ffe66d'/%3E%3C/svg%3E">
     <script src="../../src/docs-canvas.js"></script>
