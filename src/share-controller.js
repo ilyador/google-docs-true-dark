@@ -32,7 +32,9 @@
   const media = window.matchMedia("(prefers-color-scheme: dark)");
   const isDark = () => fixture && params.has("dark") ? true : media.matches;
   const surfaceAttribute = "data-gdt-share-surface";
+  const dividerAttribute = "data-gdt-share-divider";
   const markedSurfaces = new Set();
+  const markedDividers = new Set();
   let scanFrame = 0;
   const apply = () => {
     document.documentElement?.setAttribute("data-gdt-share-dark", isDark() ? "on" : "off");
@@ -43,6 +45,10 @@
         element.removeAttribute(surfaceAttribute);
       }
       markedSurfaces.clear();
+      for (const element of markedDividers) {
+        element.removeAttribute(dividerAttribute);
+      }
+      markedDividers.clear();
     }
   };
 
@@ -55,24 +61,40 @@
       if (!isDark()) {
         return;
       }
-      for (const element of document.body.querySelectorAll("div, c-wiz, section, article, main, button, [role='button'], span, label")) {
-        if (element.hasAttribute(surfaceAttribute)) {
+      for (const element of document.body.querySelectorAll("div, c-wiz, section, article, main, button, ul, li, hr, [role='button'], [role='listbox'], [role='option'], [role='separator'], span, label")) {
+        const rect = element.getBoundingClientRect();
+        if (rect.width < 24 || rect.height < 1) {
           continue;
         }
+        const style = getComputedStyle(element);
+        if (!element.hasAttribute(dividerAttribute) && rect.width >= 200 &&
+            !parseFloat(style.borderLeftWidth) && !parseFloat(style.borderRightWidth) &&
+            ((parseFloat(style.borderTopWidth) && isPaleSurface(style.borderTopColor)) ||
+             (parseFloat(style.borderBottomWidth) && isPaleSurface(style.borderBottomColor)))) {
+          element.setAttribute(dividerAttribute, "");
+          markedDividers.add(element);
+        }
+        if (element.hasAttribute(surfaceAttribute) || !isPaleSurface(style.backgroundColor)) {
+          continue;
+        }
+        const roundIcon = element.matches("div, span") && rect.width <= 80 &&
+          rect.height <= 80 && Math.abs(rect.width - rect.height) <= 8 &&
+          !element.querySelector("img, picture, video, canvas") &&
+          (style.borderTopLeftRadius.includes("%") ?
+            parseFloat(style.borderTopLeftRadius) >= 40 :
+            parseFloat(style.borderTopLeftRadius) >= rect.width * 0.4);
         const control = element.matches("button, [role='button']");
+        const suggestion = element.closest("[role='listbox']");
         const fieldHost = element.closest(".yid0mf, [role='combobox'], label");
         const fieldText = !control && element.matches("div, span, label") &&
           fieldHost && fieldHost !== element;
-        const rect = element.getBoundingClientRect();
-        if (rect.width < (fieldText ? 40 : control ? 48 : 200) ||
-            rect.height < (fieldText ? 12 : control ? 24 : 32)) {
-          continue;
-        }
-        if (!isPaleSurface(getComputedStyle(element).backgroundColor)) {
+        if (!roundIcon && (rect.width < (fieldText ? 40 : control ? 48 : 200) ||
+            rect.height < (fieldText ? 12 : control ? 24 : 32))) {
           continue;
         }
         element.setAttribute(surfaceAttribute,
-          fieldText ? "placeholder" : control ? "control" : rect.height >= 120 ? "panel" : "field");
+          roundIcon ? "icon" : suggestion ? element === suggestion ? "panel" : "control" :
+            fieldText ? "placeholder" : control ? "control" : rect.height >= 120 ? "panel" : "field");
         markedSurfaces.add(element);
       }
     });

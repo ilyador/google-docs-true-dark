@@ -297,24 +297,67 @@ try {
 
   await navigate("share-fixture.html");
   await waitUntil(() => evaluate("document.querySelector('.fixture-share-panel')?.getAttribute('data-gdt-share-surface') === 'panel'"), "Share surface theme");
+  await waitUntil(() => evaluate("document.querySelector('.fixture-suggestion-content')?.getAttribute('data-gdt-share-surface') === 'control'"), "Share suggestion theme");
+  await waitUntil(() => evaluate("document.querySelector('.fixture-access-row')?.hasAttribute('data-gdt-share-divider')"), "Share divider theme");
+  await waitUntil(() => evaluate("document.querySelector('.fixture-restricted-icon')?.getAttribute('data-gdt-share-surface') === 'icon'"), "Share access icon theme");
   const darkShare = await evaluate(`(() => ({
     panel: getComputedStyle(document.querySelector('.fixture-share-panel')).backgroundColor,
     title: getComputedStyle(document.querySelector('h2')).color,
     primary: getComputedStyle(document.querySelector('.primary')).backgroundColor,
-    mailInput: getComputedStyle(document.querySelector('.fixture-mail-field input')).backgroundColor,
-    mailPlaceholder: getComputedStyle(document.querySelector('.fixture-mail-placeholder')).backgroundColor,
-    mailPlaceholderColor: getComputedStyle(document.querySelector('.fixture-mail-placeholder')).color,
-    pseudoPlaceholder: getComputedStyle(document.querySelector('.YMNIz'), '::after').backgroundColor,
+    mailField: getComputedStyle(document.querySelector('.I9OJHe')).backgroundColor,
+    mailInput: getComputedStyle(document.querySelector('#fixture-mail-input')).backgroundColor,
+    mailLabel: getComputedStyle(document.querySelector('.snByac')).backgroundColor,
+    mailLabelText: getComputedStyle(document.querySelector('.o8tTsf')).color,
+    mailLabelInner: getComputedStyle(document.querySelector('.o8tTsf')).backgroundColor,
+    suggestions: getComputedStyle(document.querySelector('.fixture-suggestions')).backgroundColor,
+    suggestionRow: getComputedStyle(document.querySelector('[role="option"]')).backgroundColor,
+    suggestionInner: getComputedStyle(document.querySelector('.fixture-suggestion-content')).backgroundColor,
+    suggestionText: getComputedStyle(document.querySelector('.fixture-suggestion-content')).color,
+    suggestionAvatar: getComputedStyle(document.querySelector('.fixture-suggestion-avatar')).backgroundColor,
+    divider: getComputedStyle(document.querySelector('.fixture-access-row')).borderTopColor,
+    accessIcon: getComputedStyle(document.querySelector('.fixture-restricted-icon')).backgroundColor,
+    pseudoPlaceholder: getComputedStyle(document.querySelector('.fixture-pseudo-field .YMNIz'), '::after').backgroundColor,
     nestedPlaceholder: getComputedStyle(document.querySelector('.fixture-nested-placeholder')).backgroundColor
   }))()`);
   assert.equal(darkShare.panel, "rgb(32, 36, 45)");
   assert.equal(darkShare.title, "rgb(232, 236, 242)");
   assert.equal(darkShare.primary, "rgb(11, 87, 208)");
-  assert.equal(darkShare.mailInput, "rgb(23, 27, 34)");
-  assert.equal(darkShare.mailPlaceholder, "rgb(23, 27, 34)");
-  assert.equal(darkShare.mailPlaceholderColor, "rgb(174, 183, 196)");
-  assert.equal(darkShare.pseudoPlaceholder, "rgb(23, 27, 34)");
-  assert.equal(darkShare.nestedPlaceholder, "rgb(23, 27, 34)");
+  assert.equal(darkShare.mailField, darkShare.panel);
+  assert.equal(darkShare.mailInput, "rgba(0, 0, 0, 0)");
+  assert.equal(darkShare.mailLabel, "rgb(32, 36, 45)");
+  assert.equal(darkShare.mailLabelText, "rgb(174, 183, 196)");
+  assert.equal(darkShare.mailLabelInner, "rgb(32, 36, 45)");
+  assert.equal(darkShare.suggestions, "rgb(32, 36, 45)");
+  assert.equal(darkShare.suggestionRow, "rgb(32, 36, 45)");
+  assert.equal(darkShare.suggestionInner, "rgb(32, 36, 45)");
+  assert.equal(darkShare.suggestionText, "rgb(232, 236, 242)");
+  assert.equal(darkShare.suggestionAvatar, "rgb(88, 105, 186)");
+  assert.equal(darkShare.divider, "rgb(70, 80, 95)");
+  assert.equal(darkShare.accessIcon, "rgb(48, 56, 70)");
+  assert.equal(darkShare.pseudoPlaceholder, darkShare.panel);
+  assert.equal(darkShare.nestedPlaceholder, darkShare.panel);
+  const floatingLabel = await evaluate(`(() => {
+    const field = document.querySelector('.I9OJHe');
+    field.setAttribute('data-floating', 'true');
+    const color = getComputedStyle(field.querySelector('.snByac')).backgroundColor;
+    field.removeAttribute('data-floating');
+    return color;
+  })()`);
+  assert.equal(floatingLabel, darkShare.mailField);
+  await evaluate(`(() => {
+    const option = document.createElement('li');
+    option.setAttribute('role', 'option');
+    option.setAttribute('aria-selected', 'true');
+    option.innerHTML = '<div class="fixture-suggestion-content">New suggestion</div>';
+    document.querySelector('.fixture-suggestions').append(option);
+  })()`);
+  await waitUntil(() => evaluate(`document.querySelector('[role="option"][aria-selected="true"] .fixture-suggestion-content')?.getAttribute('data-gdt-share-surface') === 'control'`), "dynamic Share suggestion theme");
+  const selectedSuggestion = await evaluate(`(() => ({
+    row: getComputedStyle(document.querySelector('[role="option"][aria-selected="true"]')).backgroundColor,
+    content: getComputedStyle(document.querySelector('[role="option"][aria-selected="true"] .fixture-suggestion-content')).backgroundColor
+  }))()`);
+  assert.equal(selectedSuggestion.row, "rgb(48, 56, 70)");
+  assert.equal(selectedSuggestion.content, "rgb(48, 56, 70)");
   await screenshot("gdt-share-dark-verify.png");
 
   await send("Emulation.setEmulatedMedia", {
@@ -325,15 +368,29 @@ try {
     mode: document.documentElement.getAttribute('data-gdt-share-dark'),
     panel: getComputedStyle(document.querySelector('.fixture-share-panel')).backgroundColor,
     title: getComputedStyle(document.querySelector('h2')).color,
-    mailPlaceholder: getComputedStyle(document.querySelector('.fixture-mail-placeholder')).backgroundColor,
-    pseudoPlaceholder: getComputedStyle(document.querySelector('.YMNIz'), '::after').backgroundColor,
+    mailField: getComputedStyle(document.querySelector('.I9OJHe')).backgroundColor,
+    mailInput: getComputedStyle(document.querySelector('#fixture-mail-input')).backgroundColor,
+    mailLabel: getComputedStyle(document.querySelector('.snByac')).backgroundColor,
+    suggestions: getComputedStyle(document.querySelector('.fixture-suggestions')).backgroundColor,
+    suggestionRow: getComputedStyle(document.querySelector('[role="option"]')).backgroundColor,
+    suggestionInner: getComputedStyle(document.querySelector('.fixture-suggestion-content')).backgroundColor,
+    divider: getComputedStyle(document.querySelector('.fixture-access-row')).borderTopColor,
+    accessIcon: getComputedStyle(document.querySelector('.fixture-restricted-icon')).backgroundColor,
+    pseudoPlaceholder: getComputedStyle(document.querySelector('.fixture-pseudo-field .YMNIz'), '::after').backgroundColor,
     nestedPlaceholder: getComputedStyle(document.querySelector('.fixture-nested-placeholder')).backgroundColor,
-    marked: document.querySelectorAll('[data-gdt-share-surface]').length
+    marked: document.querySelectorAll('[data-gdt-share-surface], [data-gdt-share-divider]').length
   }))()`);
   assert.equal(lightShare.mode, "off");
   assert.equal(lightShare.panel, "rgb(255, 255, 255)");
   assert.equal(lightShare.title, "rgb(32, 33, 36)");
-  assert.equal(lightShare.mailPlaceholder, "rgb(255, 255, 255)");
+  assert.equal(lightShare.mailField, "rgb(255, 255, 255)");
+  assert.equal(lightShare.mailInput, "rgb(255, 255, 255)");
+  assert.equal(lightShare.mailLabel, "rgb(255, 255, 255)");
+  assert.equal(lightShare.suggestions, "rgb(241, 246, 255)");
+  assert.equal(lightShare.suggestionRow, "rgb(241, 246, 255)");
+  assert.equal(lightShare.suggestionInner, "rgb(241, 246, 255)");
+  assert.equal(lightShare.divider, "rgb(255, 255, 255)");
+  assert.equal(lightShare.accessIcon, "rgb(244, 246, 251)");
   assert.equal(lightShare.pseudoPlaceholder, "rgb(255, 255, 255)");
   assert.equal(lightShare.nestedPlaceholder, "rgb(255, 255, 255)");
   assert.equal(lightShare.marked, 0);

@@ -2,7 +2,7 @@ html[data-gdt-share-dark="on"] {
   color-scheme: dark !important;
   --gdt-share-bg: #0f1116;
   --gdt-share-panel: #20242d;
-  --gdt-share-field: #171b22;
+  --gdt-share-field: #20242d;
   --gdt-share-text: #e8ecf2;
   --gdt-share-muted: #aeb7c4;
   --gdt-share-line: #46505f;
@@ -52,6 +52,48 @@ html[data-gdt-share-dark="on"] .yid0mf .boqDrivePeopleWebMultiselectInputchipWra
   color: var(--gdt-share-muted) !important;
 }
 
+html[data-gdt-share-dark="on"] .I9OJHe:has(input[role="combobox"]) {
+  background: var(--gdt-share-field) !important;
+}
+
+html[data-gdt-share-dark="on"] .I9OJHe:has(input[role="combobox"]) :is(
+  .QVyFTd,
+  .zHQkBf,
+  .NtoL8e,
+  .YMNIz,
+  input[role="combobox"]
+) {
+  background: transparent !important;
+}
+
+html[data-gdt-share-dark="on"] .I9OJHe:has(input[role="combobox"]) :is(
+  label.snByac,
+  label.snByac .CeSLIf,
+  label.snByac .o8tTsf
+) {
+  background: var(--gdt-share-panel) !important;
+  color: var(--gdt-share-muted) !important;
+}
+
+html[data-gdt-share-dark="on"] [role="listbox"] {
+  background: var(--gdt-share-panel) !important;
+  border-color: var(--gdt-share-line) !important;
+  color: var(--gdt-share-text) !important;
+}
+
+html[data-gdt-share-dark="on"] [role="listbox"] [role="option"] {
+  background: var(--gdt-share-panel) !important;
+  color: var(--gdt-share-text) !important;
+}
+
+html[data-gdt-share-dark="on"] [role="listbox"] [role="option"]:is(:hover, [aria-selected="true"]) {
+  background: #303846 !important;
+}
+
+html[data-gdt-share-dark="on"] [role="listbox"] [role="option"]:is(:hover, [aria-selected="true"]) [data-gdt-share-surface] {
+  background-color: #303846 !important;
+}
+
 html[data-gdt-share-dark="on"] [data-gdt-share-surface="panel"] {
   background-color: var(--gdt-share-panel) !important;
   border-color: var(--gdt-share-line) !important;
@@ -64,6 +106,20 @@ html[data-gdt-share-dark="on"] [data-gdt-share-surface="field"] {
 
 html[data-gdt-share-dark="on"] [data-gdt-share-surface="control"] {
   background-color: var(--gdt-share-panel) !important;
+  border-color: var(--gdt-share-line) !important;
+}
+
+html[data-gdt-share-dark="on"] [data-gdt-share-surface="icon"] {
+  background-color: #303846 !important;
+}
+
+html[data-gdt-share-dark="on"] [data-gdt-share-divider] {
+  border-top-color: var(--gdt-share-line) !important;
+  border-bottom-color: var(--gdt-share-line) !important;
+}
+
+html[data-gdt-share-dark="on"] :is(hr, [role="separator"]) {
+  background-color: var(--gdt-share-line) !important;
   border-color: var(--gdt-share-line) !important;
 }
 
