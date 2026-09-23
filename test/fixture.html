@@ -240,7 +240,8 @@
             <img alt="fixture photo" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='240'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='1' y1='0' y2='1'%3E%3Cstop stop-color='%23ff6b6b'/%3E%3Cstop offset='1' stop-color='%234ecdc4'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23g)' width='360' height='240'/%3E%3Ccircle fill='%23ffe66d' cx='252' cy='76' r='42'/%3E%3Cpath fill='%232d3047' d='M0 185h360v55H0z'/%3E%3C/svg%3E">
             <div class="chart"></div>
           </div>
-          <canvas id="canvas-doc" width="620" height="160" style="width: 100%; height: 160px;"></canvas>
+          <canvas id="canvas-doc" width="620" height="210" style="width: 100%; height: 210px;"></canvas>
+          <canvas id="canvas-checkboxes" width="200" height="60" style="display: block; margin-top: 12px;"></canvas>
         </article>
       </section>
 
@@ -271,9 +272,51 @@
       context.fillText("Canvas-rendered text should be light, not inverted.", 28, 56);
       context.fillStyle = "#1155cc";
       context.fillText("Blue canvas text keeps hue and gains contrast.", 28, 104);
+      context.font = "18px Arial";
+      context.fillStyle = "#202124";
+      context.fillText("Under line", 28, 144);
+      context.strokeStyle = "#202124";
+      context.lineWidth = 1.2;
+      context.beginPath();
+      context.moveTo(28.2, 146);
+      context.lineTo(28 + context.measureText("Under line").width, 146);
+      context.stroke();
+      context.fillStyle = "#595959";
+      context.fillText("Completed task", 280, 144);
+      context.strokeStyle = "#595959";
+      context.beginPath();
+      context.moveTo(280.2, 139);
+      context.lineTo(280 + context.measureText("Completed task").width, 139);
+      context.stroke();
       context.strokeStyle = "#dadce0";
+      context.beginPath();
+      context.moveTo(28, 185);
+      context.lineTo(550, 185);
+      context.stroke();
       context.lineWidth = 4;
       context.strokeRect(18, 18, canvas.width - 36, canvas.height - 36);
+
+      const controls = document.getElementById("canvas-checkboxes").getContext("2d");
+      controls.fillStyle = "#ffffff";
+      controls.fillRect(0, 0, 200, 60);
+      const box = new Path2D("M0 0h16v16H0z M2 2h12v12H2z");
+      const tick = new Path2D("M3 8l3 3 7-7-1-1-6 6-2-2z");
+      controls.fillStyle = "#595959";
+      controls.save();
+      controls.translate(18, 18);
+      controls.fill(box, "evenodd");
+      controls.restore();
+      controls.save();
+      controls.translate(60, 18);
+      controls.fill(box, "evenodd");
+      controls.fill(tick, "evenodd");
+      controls.restore();
+      controls.fillRect(110, 18, 16, 16);
+      controls.fillStyle = "#e53935";
+      controls.save();
+      controls.translate(150, 18);
+      controls.fill(box, "evenodd");
+      controls.restore();
     </script>
   </body>
 </html>

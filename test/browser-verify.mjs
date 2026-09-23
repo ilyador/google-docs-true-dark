@@ -136,6 +136,43 @@ try {
   assert.equal(docsDetails.decoration, "rgb(174, 183, 196)");
   assert.equal(docsDetails.shortcut, "rgb(174, 183, 196)");
   assert.equal(docsDetails.track, "rgba(0, 0, 0, 0)");
+  const canvasLinePixels = () => evaluate(`(() => {
+    const context = document.querySelector('#canvas-doc').getContext('2d');
+    const pixel = (x, y) => context.getImageData(Math.round(x), y, 1, 1).data[0];
+    return {
+      underline: pixel(28 + context.measureText('Under').width + context.measureText(' ').width / 2, 146),
+      strike: pixel(280 + context.measureText('Completed').width + context.measureText(' ').width / 2, 139),
+      border: pixel(300, 185)
+    };
+  })()`);
+  const canvasControlPixels = () => evaluate(`(() => {
+    const context = document.querySelector('#canvas-checkboxes').getContext('2d');
+    const pixel = (x, y) => context.getImageData(x, y, 1, 1).data[0];
+    const tickArea = context.getImageData(64, 21, 9, 10).data;
+    let tickMin = 255;
+    let tickMax = 0;
+    for (let i = 0; i < tickArea.length; i += 4) {
+      tickMin = Math.min(tickMin, tickArea[i]);
+      tickMax = Math.max(tickMax, tickArea[i]);
+    }
+    return {
+      empty: pixel(18, 25),
+      checked: pixel(60, 25),
+      tickMin,
+      tickMax,
+      ordinaryShape: pixel(110, 25),
+      coloredShape: pixel(150, 25),
+      background: pixel(25, 25)
+    };
+  })()`);
+  const darkCanvasLines = await canvasLinePixels();
+  assert(darkCanvasLines.underline > darkCanvasLines.border + 50, JSON.stringify(darkCanvasLines));
+  assert(darkCanvasLines.strike > darkCanvasLines.border + 50, JSON.stringify(darkCanvasLines));
+  const darkControls = await canvasControlPixels();
+  assert(darkControls.empty > darkControls.ordinaryShape + 60, JSON.stringify(darkControls));
+  assert(darkControls.checked > darkControls.ordinaryShape + 60, JSON.stringify(darkControls));
+  assert(darkControls.tickMax > darkControls.ordinaryShape + 60, JSON.stringify(darkControls));
+  assert(darkControls.background < 40, JSON.stringify(darkControls));
   const originalDecorationSources = await evaluate(`({
     underline: document.querySelector('.fixture-underline').getAttribute('style'),
     strike: document.querySelector('.fixture-strike').getAttribute('style')
@@ -170,6 +207,15 @@ try {
   assert.equal(lightDocsDetails.selected, "rgb(54, 95, 150)");
   assert.equal(lightDocsDetails.underline, "rgb(32, 33, 36)");
   assert.equal(lightDocsDetails.strike, "rgb(32, 33, 36)");
+  const lightCanvasLines = await canvasLinePixels();
+  assert(lightCanvasLines.border > lightCanvasLines.underline + 60, JSON.stringify(lightCanvasLines));
+  assert(lightCanvasLines.border > lightCanvasLines.strike + 35, JSON.stringify(lightCanvasLines));
+  const lightControls = await canvasControlPixels();
+  assert(Math.abs(lightControls.empty - lightControls.ordinaryShape) < 3, JSON.stringify(lightControls));
+  assert(Math.abs(lightControls.checked - lightControls.ordinaryShape) < 3, JSON.stringify(lightControls));
+  assert(Math.abs(lightControls.tickMin - lightControls.ordinaryShape) < 3, JSON.stringify(lightControls));
+  assert(lightControls.background > 240, JSON.stringify(lightControls));
+  assert.equal(lightControls.coloredShape, darkControls.coloredShape);
   const lightDecorationSources = await evaluate(`({
     underline: document.querySelector('.fixture-underline').getAttribute('style'),
     strike: document.querySelector('.fixture-strike').getAttribute('style')
@@ -180,6 +226,13 @@ try {
   await send("Emulation.setEmulatedMedia", {
     features: [{ name: "prefers-color-scheme", value: "dark" }]
   });
+  await waitUntil(() => evaluate("document.documentElement.getAttribute('data-gdt-dark') === 'on'"), "Docs dark mode restored");
+  const restoredCanvasLines = await canvasLinePixels();
+  assert(restoredCanvasLines.underline > restoredCanvasLines.border + 50, JSON.stringify(restoredCanvasLines));
+  assert(restoredCanvasLines.strike > restoredCanvasLines.border + 50, JSON.stringify(restoredCanvasLines));
+  const restoredControls = await canvasControlPixels();
+  assert(restoredControls.empty > restoredControls.ordinaryShape + 60, JSON.stringify(restoredControls));
+  assert(restoredControls.checked > restoredControls.ordinaryShape + 60, JSON.stringify(restoredControls));
   await navigate("spreadsheets/extension-fixture.html");
   const sheet = await evaluate(`(() => {
     const editor = document.querySelector('#waffle-rich-text-editor');

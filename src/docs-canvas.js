@@ -18,7 +18,10 @@
   const tools = createColorTools();
   const gradientVariants = new WeakMap();
   const recorders = new WeakMap();
+  const decorationTrackers = new WeakMap();
   const replayCanvases = new Set();
+  const isSheets = window.location.pathname.includes("/spreadsheets/");
+  const isDocs = !isSheets;
   let isReplaying = false;
   let modeObserver = null;
 
@@ -157,11 +160,11 @@
     patchMethod(proto, originals, "strokeRect", "border", (context, draw, args) => {
       return withStyle(context, strokeStyleDescriptor, "border", () => draw.apply(context, args));
     });
-    patchMethod(proto, originals, "fill", "background", (context, draw, args) => {
-      return withStyle(context, fillStyleDescriptor, "background", () => draw.apply(context, args));
+    patchMethod(proto, originals, "fill", "background", (context, draw, args, role) => {
+      return withStyle(context, fillStyleDescriptor, role, () => draw.apply(context, args));
     });
-    patchMethod(proto, originals, "stroke", "border", (context, draw, args) => {
-      return withStyle(context, strokeStyleDescriptor, "border", () => draw.apply(context, args));
+    patchMethod(proto, originals, "stroke", "border", (context, draw, args, role) => {
+      return withStyle(context, strokeStyleDescriptor, role, () => draw.apply(context, args));
     });
   }
 
@@ -191,6 +194,7 @@
     }
 
     proto[name] = function patchedRecordedCanvasMethod(...args) {
+      trackDecorationDraw(this, name, args);
       recordOperation(this, originals, name, args, role);
       return original.apply(this, args);
     };
@@ -203,7 +207,16 @@
     }
 
     proto[name] = function patchedCanvasMethod(...args) {
-      recordOperation(this, originals, name, args, role);
+      let drawRole = role;
+      if (name === "stroke" && isTextDecorationStroke(this, args)) {
+        drawRole = "foreground";
+      } else if (name === "fill" && isDocs && typeof Path2D === "function" &&
+        args[0] instanceof Path2D && args[1] === "evenodd") {
+        // Checklist boxes and ticks use vector glyph fills rather than text or borders.
+        drawRole = "glyph";
+      }
+      trackDecorationDraw(this, name, args);
+      recordOperation(this, originals, name, args, drawRole);
       const darkNow = isDark();
       if (darkNow !== state.dark) {
         setMode(darkNow);
@@ -211,8 +224,87 @@
       if (!darkNow) {
         return original.apply(this, args);
       }
-      return wrapper(this, original, args);
+      return wrapper(this, original, args, drawRole);
     };
+  }
+
+  function trackDecorationDraw(context, name, args) {
+    if (!isDocs || isReplaying || !context || !context.canvas) {
+      return;
+    }
+
+    let tracker = decorationTrackers.get(context);
+    if (!tracker) {
+      tracker = { width: context.canvas.width, height: context.canvas.height, runs: [], path: null };
+      decorationTrackers.set(context, tracker);
+    }
+    if (tracker.width !== context.canvas.width || tracker.height !== context.canvas.height ||
+      isFullCanvasReset(context.canvas, name, args)) {
+      tracker.width = context.canvas.width;
+      tracker.height = context.canvas.height;
+      tracker.runs.length = 0;
+      tracker.path = null;
+    }
+
+    if (name === "fillText" && typeof args[0] === "string") {
+      const x = Number(args[1]);
+      const y = Number(args[2]);
+      if (!Number.isFinite(x) || !Number.isFinite(y)) {
+        return;
+      }
+      const width = context.measureText(args[0]).width;
+      const maxWidth = Number(args[3]);
+      const fontSize = Number(context.font.match(/([\d.]+)px/)?.[1]) || 16;
+      tracker.runs.push({
+        x,
+        y,
+        width: Number.isFinite(maxWidth) && maxWidth > 0 ? Math.min(width, maxWidth) : width,
+        color: context.fillStyle,
+        fontSize,
+        transform: context.getTransform()
+      });
+      if (tracker.runs.length > 1000) {
+        tracker.runs.splice(0, tracker.runs.length - 1000);
+      }
+    } else if (name === "beginPath") {
+      tracker.path = { points: [], valid: true };
+    } else if (name === "moveTo" || name === "lineTo") {
+      if (!tracker.path || tracker.path.points.length >= 2 ||
+        (name === "moveTo" && tracker.path.points.length !== 0) ||
+        (name === "lineTo" && tracker.path.points.length !== 1)) {
+        if (tracker.path) tracker.path.valid = false;
+        return;
+      }
+      tracker.path.points.push({ x: Number(args[0]), y: Number(args[1]) });
+    } else if (tracker.path && ["closePath", "rect", "arc", "ellipse", "quadraticCurveTo", "bezierCurveTo"].includes(name)) {
+      tracker.path.valid = false;
+    }
+  }
+
+  // Docs draws underlines and strikethroughs as paths after the matching text run.
+  function isTextDecorationStroke(context, args) {
+    if (!isDocs || isReplaying || args.length || !context || !context.canvas || context.lineWidth > 3) {
+      return false;
+    }
+    const tracker = decorationTrackers.get(context);
+    const path = tracker && tracker.path;
+    if (!path || !path.valid || path.points.length !== 2) {
+      return false;
+    }
+    const [start, end] = path.points;
+    if (!Number.isFinite(start.x) || !Number.isFinite(start.y) || !Number.isFinite(end.x) ||
+      Math.abs(start.y - end.y) > 0.2 || end.x - start.x < 5) {
+      return false;
+    }
+    const transform = context.getTransform();
+    return tracker.runs.some((run) =>
+      run.color === context.strokeStyle &&
+      Math.abs(start.x - run.x) < 2 &&
+      Math.abs(end.x - run.x - run.width) < 3 &&
+      start.y >= run.y - run.fontSize * 0.65 &&
+      start.y <= run.y + run.fontSize * 0.4 &&
+      ["a", "b", "c", "d", "e", "f"].every((key) => Math.abs(transform[key] - run.transform[key]) < 0.01)
+    );
   }
 
   function recordOperation(context, originals, name, args, role) {
@@ -435,7 +527,7 @@
     let fillStyle = savedState.fillStyle;
     let strokeStyle = savedState.strokeStyle;
     if (state.dark) {
-      if (role === "foreground" || role === "background") {
+      if (role === "foreground" || role === "background" || role === "glyph") {
         fillStyle = adaptCanvasStyle(fillStyle, role);
       }
       if (role === "foreground" || role === "border") {
@@ -525,8 +617,6 @@
     const canvas = document.createElement("canvas");
     const context = canvas.getContext("2d", { willReadFrequently: true });
     const cache = new Map();
-    const isSheets = window.location.pathname.includes("/spreadsheets/");
-
     function adaptCssColor(value, role) {
       const normalized = normalizeColor(value);
       if (!normalized) {
@@ -617,6 +707,12 @@
           return isNeutral ? withAlpha({ r: 205, g: 213, b: 224 }, color.a) : hslToRgb(hsl.h, Math.max(hsl.s, 0.38), 0.68, color.a);
         }
         return color;
+      }
+
+      if (role === "glyph") {
+        return isNeutral && luminance < 0.42
+          ? withAlpha({ r: 174, g: 183, b: 196 }, color.a)
+          : color;
       }
 
       if (role === "border") {
