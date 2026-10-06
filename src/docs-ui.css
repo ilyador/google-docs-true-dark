@@ -223,6 +223,50 @@ html[data-gdt-app="docs"][data-gdt-dark="on"] body.docs-gm :is(
   opacity: 1 !important;
 }
 
+html[data-gdt-app="docs"][data-gdt-dark="on"] body.docs-gm .goog-menu :is(
+  .goog-menuitem,
+  .goog-menuitem-content
+) {
+  background: transparent !important;
+}
+
+html[data-gdt-app="docs"][data-gdt-dark="on"] body.docs-gm .goog-menu :is(
+  .goog-menuitem-highlight,
+  .goog-menuitem-hover,
+  .goog-menuitem-open,
+  .goog-menuitem-selected,
+  .goog-menuitem:hover
+):not(.goog-menuitem-disabled):not([aria-disabled="true"]) {
+  background: var(--gdt-control-hover) !important;
+}
+
+html[data-gdt-app="docs"][data-gdt-dark="on"] body.docs-gm .goog-menu .goog-menuitem-label {
+  color: var(--gdt-control-text) !important;
+}
+
+html[data-gdt-app="docs"][data-gdt-dark="on"] body.docs-gm .goog-menu :is(
+  .goog-menuitem-disabled,
+  .goog-menuitem[aria-disabled="true"]
+) {
+  color: var(--gdt-control-muted) !important;
+  opacity: 1 !important;
+}
+
+html[data-gdt-app="docs"][data-gdt-dark="on"] body.docs-gm .goog-menu :is(
+  .goog-menuitem-disabled,
+  .goog-menuitem[aria-disabled="true"]
+) :is(.goog-menuitem-content, .goog-menuitem-label, .goog-menuitem-accel) {
+  color: var(--gdt-control-muted) !important;
+  -webkit-text-fill-color: var(--gdt-control-muted) !important;
+}
+
+html[data-gdt-app="docs"][data-gdt-dark="on"] body.docs-gm .goog-menu :is(
+  .goog-menuitem-disabled,
+  .goog-menuitem[aria-disabled="true"]
+) .docs-icon-img {
+  filter: var(--gdt-icon-disabled-filter) !important;
+}
+
 html[data-gdt-app="docs"][data-gdt-dark="on"] body.docs-gm #docs-chrome :is(
   .goog-toolbar-button-disabled,
   .goog-toolbar-menu-button-disabled,
@@ -335,6 +379,74 @@ html[data-gdt-app="docs"][data-gdt-dark="on"] body.docs-gm .left-sidebar-contain
   background: var(--gdt-chrome) !important;
   color: var(--gdt-control-text) !important;
   border-color: var(--gdt-control-line) !important;
+}
+
+html[data-gdt-app="docs"][data-gdt-dark="on"] body.docs-gm .docs-navigation-tab-button {
+  background-color: var(--gdt-control-hover) !important;
+  color: var(--gdt-control-text) !important;
+  border-color: transparent !important;
+}
+
+html[data-gdt-app="docs"][data-gdt-dark="on"] body.docs-gm .docs-navigation-tab-button:hover {
+  background-color: var(--gdt-control-open) !important;
+}
+
+html[data-gdt-app="docs"][data-gdt-dark="on"] body.docs-gm .docs-icon-list-20x20.docs-icon-masked-image {
+  background-color: var(--gdt-control-text) !important;
+  filter: none !important;
+  opacity: 1 !important;
+}
+
+html[data-gdt-app="docs"][data-gdt-dark="on"] body.docs-gm :is(
+  .docs-navigation-tab-button,
+  #navigation-widget-hat-list-icon,
+  .navigation-widget-hat-close-button-icon
+) :is(.docs-icon-img, .docs-icon-img-container, .docs-icon) {
+  filter: var(--gdt-icon-filter) !important;
+  opacity: 1 !important;
+}
+
+html[data-gdt-app="docs"][data-gdt-dark="on"] body.docs-gm :is(
+  #navigation-widget-hat-list-icon,
+  .navigation-widget-hat-close-button-icon
+):not(.docs-icon-masked-image):not(:has(.docs-icon-img, .docs-icon-img-container, .docs-icon-masked-image, svg)) {
+  filter: var(--gdt-icon-filter) !important;
+  opacity: 1 !important;
+}
+
+html[data-gdt-app="docs"][data-gdt-dark="on"] body.docs-gm :is(
+  .docs-navigation-tab-button,
+  #navigation-widget-hat-list-icon,
+  .navigation-widget-hat-close-button-icon
+) .docs-icon-masked-image {
+  color: var(--gdt-control-text) !important;
+  background-color: var(--gdt-control-text) !important;
+  opacity: 1 !important;
+}
+
+html[data-gdt-app="docs"][data-gdt-dark="on"] body.docs-gm :is(
+  .docs-navigation-tab-button,
+  #navigation-widget-hat-list-icon,
+  .navigation-widget-hat-close-button-icon
+) svg {
+  color: var(--gdt-control-text) !important;
+  opacity: 1 !important;
+}
+
+html[data-gdt-app="docs"][data-gdt-dark="on"] body.docs-gm :is(
+  .docs-navigation-tab-button,
+  #navigation-widget-hat-list-icon,
+  .navigation-widget-hat-close-button-icon
+) svg :is(path, rect, line, polyline)[stroke]:not([stroke="none"]) {
+  stroke: currentColor !important;
+}
+
+html[data-gdt-app="docs"][data-gdt-dark="on"] body.docs-gm :is(
+  .docs-navigation-tab-button,
+  #navigation-widget-hat-list-icon,
+  .navigation-widget-hat-close-button-icon
+) svg :is(path, rect, polygon)[fill]:not([fill="none"]) {
+  fill: currentColor !important;
 }
 
 html[data-gdt-app="docs"][data-gdt-dark="on"] body.docs-gm .left-sidebar-container :is(

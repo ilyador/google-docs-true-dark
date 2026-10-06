@@ -174,11 +174,11 @@ html[data-gdt-dark="on"] :where(
 html[data-gdt-dark="on"] :where(
   .goog-menu,
   .goog-menu-vertical,
-  .goog-submenu,
+  .goog-submenu:not(.goog-menuitem),
   .goog-palette,
   .goog-popup,
   .docs-gm .goog-menu,
-  .docs-gm .goog-submenu,
+  .docs-gm .goog-submenu:not(.goog-menuitem),
   .docs-gm .goog-palette,
   .docs-material-gm-dialog,
   .modal-dialog,
@@ -296,7 +296,11 @@ html[data-gdt-dark="on"] :where(
   .docs-editor
 ) {
   background: var(--gdt-bg) !important;
-  color: var(--gdt-text) !important;
+}
+
+html[data-gdt-app="docs"][data-gdt-dark="on"] :is(#docs-editor, #docs-editor-container, .kix-appview-editor) {
+  color: #202124 !important;
+  -webkit-text-fill-color: var(--gdt-text) !important;
 }
 
 html[data-gdt-dark="on"] :where(
@@ -311,7 +315,6 @@ html[data-gdt-dark="on"] :where(
   .kix-paragraphrenderer
 ) {
   background-color: var(--gdt-page) !important;
-  color: var(--gdt-text) !important;
   border-color: var(--gdt-line) !important;
 }
 
@@ -542,7 +545,7 @@ html[data-gdt-app="docs"][data-gdt-dark="on"] :is(#docs-editor, #docs-editor-con
   [style][style*="text-decoration:underline"],
   [style][style*="text-decoration: underline"]
 ) {
-  text-decoration-color: currentColor !important;
+  text-decoration-color: var(--gdt-text) !important;
 }
 
 html[data-gdt-app="docs"][data-gdt-dark="on"] :is(#docs-editor, #docs-editor-container, .kix-appview-editor) .kix-lineview-text-block :is(

@@ -380,13 +380,17 @@ html[data-gdt-app="sheets"][data-gdt-dark="on"] :is(
 /* Sheets creates this editor outside the grid and writes light colors inline. */
 html[data-gdt-app="sheets"][data-gdt-dark="on"] .input-box:has(> #waffle-rich-text-editor) {
   background: var(--gdt-grid-bg) !important;
-  color: var(--gdt-text) !important;
+  color: #202124 !important;
 }
 
 html[data-gdt-app="sheets"][data-gdt-dark="on"] #waffle-rich-text-editor {
   background: transparent !important;
-  color: var(--gdt-text) !important;
+  -webkit-text-fill-color: var(--gdt-text) !important;
   caret-color: var(--gdt-accent) !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] #waffle-rich-text-editor [style*="color"] {
+  -webkit-text-fill-color: currentColor !important;
 }
 
 html[data-gdt-app="sheets"][data-gdt-dark="on"] #waffle-rich-text-editor :is(
@@ -397,20 +401,23 @@ html[data-gdt-app="sheets"][data-gdt-dark="on"] #waffle-rich-text-editor :is(
   [style^="color:#202124"],
   [style*=";color:#202124"]
 ) {
+  -webkit-text-fill-color: var(--gdt-text) !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] #waffle-rich-text-editor .default-formula-text-color {
+  -webkit-text-fill-color: var(--gdt-text) !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] .formula-content > .default-formula-text-color {
   color: var(--gdt-text) !important;
 }
 
-html[data-gdt-app="sheets"][data-gdt-dark="on"] :is(
-  #waffle-rich-text-editor .default-formula-text-color,
-  .formula-content > .default-formula-text-color
-) {
-  color: var(--gdt-text) !important;
+html[data-gdt-app="sheets"][data-gdt-dark="on"] #waffle-rich-text-editor .match-paren {
+  background: var(--gdt-hover) !important;
+  -webkit-text-fill-color: var(--gdt-text) !important;
 }
 
-html[data-gdt-app="sheets"][data-gdt-dark="on"] :is(
-  #waffle-rich-text-editor .match-paren,
-  .formula-content > .match-paren
-) {
+html[data-gdt-app="sheets"][data-gdt-dark="on"] .formula-content > .match-paren {
   background: var(--gdt-hover) !important;
   color: var(--gdt-text) !important;
 }
@@ -472,6 +479,39 @@ html[data-gdt-app="sheets"][data-gdt-dark="on"] :is(
   background: var(--gdt-bg) !important;
   color: var(--gdt-text) !important;
   border-color: var(--gdt-line) !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] .waffleMagicFillContainerWithAutofill {
+  background: var(--gdt-surface-raised) !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] :is(
+  .waffleMagicFillOverGridMagicButton,
+  .waffleMagicFillMagicFillAutofillButtonContainer
+) {
+  color: var(--gdt-text) !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] .waffleMagicFillOverGridMagicButton {
+  background: transparent !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] :is(
+  .waffleMagicFillOverGridMagicButton:hover,
+  .waffleMagicFillOverGridMagicButton:focus,
+  .waffleMagicFillMagicFillAutofillButtonContainer:hover,
+  .waffleMagicFillMagicFillAutofillButtonContainer:focus
+) {
+  background: var(--gdt-hover) !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] .waffleMagicFillFillContainer .waffleMagicFillMagicFillButtonIcon,
+html[data-gdt-app="sheets"][data-gdt-dark="on"] .waffleMagicFillFillContainer .waffleMagicFillMagicFillButtonIcon path {
+  fill: currentColor !important;
+}
+
+html[data-gdt-app="sheets"][data-gdt-dark="on"] .waffleMagicFillAutofillDivider {
+  background: var(--gdt-line-strong) !important;
 }
 
 /* These interaction layers sit above Sheets' canvas and must not obscure it. */

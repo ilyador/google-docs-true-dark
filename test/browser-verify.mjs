@@ -105,15 +105,33 @@ try {
       mode: document.documentElement.getAttribute('data-gdt-dark'),
       source: text.getAttribute('style'),
       color: getComputedStyle(text).color,
+      displayColor: getComputedStyle(text).webkitTextFillColor,
       page: getComputedStyle(page).backgroundColor,
       imageFilter: getComputedStyle(document.querySelector('.photo-row img')).filter
     };
   })()`);
   assert.equal(darkDoc.mode, "on");
   assert.equal(darkDoc.source, "color: #202124;");
-  assert.equal(darkDoc.color, "rgb(232, 236, 242)");
+  assert.equal(darkDoc.color, "rgb(32, 33, 36)");
+  assert.equal(darkDoc.displayColor, "rgb(232, 236, 242)");
   assert.equal(darkDoc.page, "rgb(23, 27, 34)");
   assert.equal(darkDoc.imageFilter, "none");
+  const sourceBeforeTyping = await evaluate("document.querySelector('#editable-source').getAttribute('style')");
+  await evaluate("document.querySelector('#editable-source').focus()");
+  await send("Input.insertText", { text: " More text." });
+  const typedDoc = await evaluate(`(() => {
+    const editor = document.querySelector('#editable-source');
+    return {
+      text: editor.textContent,
+      source: editor.getAttribute('style'),
+      color: getComputedStyle(editor).color,
+      displayColor: getComputedStyle(editor).webkitTextFillColor
+    };
+  })()`);
+  assert.match(typedDoc.text, /More text\./);
+  assert.equal(typedDoc.source, sourceBeforeTyping);
+  assert.equal(typedDoc.color, "rgb(32, 33, 36)");
+  assert.equal(typedDoc.displayColor, "rgb(232, 236, 242)");
   const docsDetails = await evaluate(`(() => ({
     selected: getComputedStyle(document.querySelector('.left-sidebar-container [aria-selected="true"]')).backgroundColor,
     options: getComputedStyle(document.querySelector('[aria-label="Tab options"]')).backgroundColor,
@@ -124,7 +142,21 @@ try {
     strike: getComputedStyle(document.querySelector('.fixture-strike')).textDecorationColor,
     decoration: getComputedStyle(document.querySelector('.fixture-decoration-border')).borderBottomColor,
     shortcut: getComputedStyle(document.querySelector('.goog-menuitem-accel')).color,
-    track: getComputedStyle(document.querySelector('.goog-menu'), '::-webkit-scrollbar-track').backgroundColor
+    track: getComputedStyle(document.querySelector('.goog-menu'), '::-webkit-scrollbar-track').backgroundColor,
+    menuRow: getComputedStyle(document.querySelector('#fixture-menu-normal')).backgroundColor,
+    menuContent: getComputedStyle(document.querySelector('#fixture-menu-normal .goog-menuitem-content')).backgroundColor,
+    menuHover: getComputedStyle(document.querySelector('.goog-menuitem-highlight')).backgroundColor,
+    menuShadow: getComputedStyle(document.querySelector('.goog-menu')).boxShadow,
+    submenuRowShadow: getComputedStyle(document.querySelector('.goog-menuitem.goog-submenu')).boxShadow,
+    disabledMenuRow: getComputedStyle(document.querySelector('#fixture-menu-disabled')).backgroundColor,
+    disabledMenuLabel: getComputedStyle(document.querySelector('#fixture-menu-disabled .goog-menuitem-label')).color,
+    disabledMenuFill: getComputedStyle(document.querySelector('#fixture-menu-disabled .goog-menuitem-label')).webkitTextFillColor,
+    disabledMenuShortcut: getComputedStyle(document.querySelector('#fixture-menu-disabled .goog-menuitem-accel')).color,
+    navBackground: getComputedStyle(document.querySelector('.docs-navigation-tab-button')).backgroundColor,
+    navIconFilter: getComputedStyle(document.querySelector('.docs-navigation-tab-button .docs-icon-img')).filter,
+    miniCircle: getComputedStyle(document.querySelector('.fixture-mini-chapter')).backgroundColor,
+    miniIcon: getComputedStyle(document.querySelector('.fixture-mini-chapter-glyph')).backgroundColor,
+    miniMask: getComputedStyle(document.querySelector('.fixture-mini-chapter-glyph')).webkitMaskImage
   }))()`);
   assert.equal(docsDetails.selected, "rgb(48, 56, 70)");
   assert.equal(docsDetails.options, "rgba(0, 0, 0, 0)");
@@ -136,6 +168,27 @@ try {
   assert.equal(docsDetails.decoration, "rgb(174, 183, 196)");
   assert.equal(docsDetails.shortcut, "rgb(174, 183, 196)");
   assert.equal(docsDetails.track, "rgba(0, 0, 0, 0)");
+  assert.equal(docsDetails.menuRow, "rgba(0, 0, 0, 0)");
+  assert.equal(docsDetails.menuContent, "rgba(0, 0, 0, 0)");
+  assert.equal(docsDetails.menuHover, "rgb(42, 48, 59)");
+  assert.notEqual(docsDetails.menuShadow, "none");
+  assert.equal(docsDetails.submenuRowShadow, "none");
+  assert.equal(docsDetails.disabledMenuRow, "rgba(0, 0, 0, 0)");
+  assert.equal(docsDetails.disabledMenuLabel, "rgb(152, 163, 179)");
+  assert.equal(docsDetails.disabledMenuFill, docsDetails.disabledMenuLabel);
+  assert.equal(docsDetails.disabledMenuShortcut, docsDetails.disabledMenuLabel);
+  assert.equal(docsDetails.navBackground, "rgb(42, 48, 59)");
+  assert.notEqual(docsDetails.navIconFilter, "none");
+  assert.equal(docsDetails.miniCircle, "rgb(37, 43, 54)");
+  assert.equal(docsDetails.miniIcon, "rgb(220, 227, 237)");
+  assert.match(docsDetails.miniMask, /^url\(/);
+  const hoverCenter = await evaluate(`(() => {
+    const rect = document.querySelector('#fixture-menu-normal').getBoundingClientRect();
+    return { x: rect.x + rect.width / 2, y: rect.y + rect.height / 2 };
+  })()`);
+  await send("Input.dispatchMouseEvent", { type: "mouseMoved", ...hoverCenter });
+  assert.equal(await evaluate("getComputedStyle(document.querySelector('#fixture-menu-normal')).backgroundColor"), "rgb(42, 48, 59)");
+  await send("Input.dispatchMouseEvent", { type: "mouseMoved", x: 0, y: 0 });
   const canvasLinePixels = () => evaluate(`(() => {
     const context = document.querySelector('#canvas-doc').getContext('2d');
     const pixel = (x, y) => context.getImageData(Math.round(x), y, 1, 1).data[0];
@@ -184,8 +237,9 @@ try {
     text.style.color = '#3c4043';
     return text.getAttribute('style');
   })()`);
-  await waitUntil(() => evaluate(`getComputedStyle(document.querySelector('.doc-line')).color === 'rgb(232, 236, 242)'`), "updated Docs color");
+  await waitUntil(() => evaluate(`getComputedStyle(document.querySelector('.doc-line')).webkitTextFillColor === 'rgb(232, 236, 242)'`), "updated Docs display color");
   assert.equal(await evaluate("document.querySelector('.doc-line').getAttribute('style')"), changedSource);
+  assert.equal(await evaluate("getComputedStyle(document.querySelector('.doc-line')).color"), "rgb(60, 64, 67)");
 
   await send("Emulation.setEmulatedMedia", {
     features: [{ name: "prefers-color-scheme", value: "light" }]
@@ -194,19 +248,35 @@ try {
   const lightDoc = await evaluate(`(() => ({
     source: document.querySelector('.doc-line').getAttribute('style'),
     color: getComputedStyle(document.querySelector('.doc-line')).color,
+    displayColor: getComputedStyle(document.querySelector('.doc-line')).webkitTextFillColor,
     rulesRemoved: !document.querySelector('style[data-gdt-doc-colors]')
   }))()`);
   assert.equal(lightDoc.source, changedSource);
   assert.equal(lightDoc.color, "rgb(60, 64, 67)");
+  assert.equal(lightDoc.displayColor, "rgb(60, 64, 67)");
   assert(lightDoc.rulesRemoved);
   const lightDocsDetails = await evaluate(`(() => ({
     selected: getComputedStyle(document.querySelector('.left-sidebar-container [aria-selected="true"]')).backgroundColor,
     underline: getComputedStyle(document.querySelector('.fixture-underline')).textDecorationColor,
-    strike: getComputedStyle(document.querySelector('.fixture-strike')).textDecorationColor
+    strike: getComputedStyle(document.querySelector('.fixture-strike')).textDecorationColor,
+    menuRow: getComputedStyle(document.querySelector('#fixture-menu-normal')).backgroundColor,
+    disabledMenuLabel: getComputedStyle(document.querySelector('#fixture-menu-disabled .goog-menuitem-label')).color,
+    disabledMenuFill: getComputedStyle(document.querySelector('#fixture-menu-disabled .goog-menuitem-label')).webkitTextFillColor,
+    navBackground: getComputedStyle(document.querySelector('.docs-navigation-tab-button')).backgroundColor,
+    navIconFilter: getComputedStyle(document.querySelector('.docs-navigation-tab-button .docs-icon-img')).filter,
+    miniCircle: getComputedStyle(document.querySelector('.fixture-mini-chapter')).backgroundColor,
+    miniIcon: getComputedStyle(document.querySelector('.fixture-mini-chapter-glyph')).backgroundColor
   }))()`);
   assert.equal(lightDocsDetails.selected, "rgb(54, 95, 150)");
   assert.equal(lightDocsDetails.underline, "rgb(32, 33, 36)");
   assert.equal(lightDocsDetails.strike, "rgb(32, 33, 36)");
+  assert.equal(lightDocsDetails.menuRow, "rgb(241, 243, 244)");
+  assert.equal(lightDocsDetails.disabledMenuLabel, "rgb(32, 33, 36)");
+  assert.equal(lightDocsDetails.disabledMenuFill, lightDocsDetails.disabledMenuLabel);
+  assert.equal(lightDocsDetails.navBackground, "rgb(232, 234, 237)");
+  assert.equal(lightDocsDetails.navIconFilter, "none");
+  assert.equal(lightDocsDetails.miniCircle, "rgb(232, 234, 237)");
+  assert.equal(lightDocsDetails.miniIcon, "rgb(68, 71, 70)");
   const lightCanvasLines = await canvasLinePixels();
   assert(lightCanvasLines.border > lightCanvasLines.underline + 60, JSON.stringify(lightCanvasLines));
   assert(lightCanvasLines.border > lightCanvasLines.strike + 35, JSON.stringify(lightCanvasLines));
@@ -241,6 +311,9 @@ try {
       mode: document.documentElement.getAttribute('data-gdt-dark'),
       source: editor.getAttribute('style'),
       color: getComputedStyle(editor).color,
+      displayColor: getComputedStyle(editor).webkitTextFillColor,
+      runColor: getComputedStyle(editor.firstElementChild).color,
+      runDisplayColor: getComputedStyle(editor.firstElementChild).webkitTextFillColor,
       sidebar: getComputedStyle(document.querySelector('.docs-tiled-sidebar')).backgroundColor,
       comment: getComputedStyle(document.querySelector('.docos-docoview')).backgroundColor,
       imageFilter: getComputedStyle(document.querySelector('#sheet-image')).filter,
@@ -250,11 +323,62 @@ try {
   assert.equal(sheet.app, "sheets");
   assert.equal(sheet.mode, "on");
   assert.equal(sheet.source, "background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);");
-  assert.equal(sheet.color, "rgb(232, 236, 242)");
+  assert.equal(sheet.color, "rgb(0, 0, 0)");
+  assert.equal(sheet.displayColor, "rgb(232, 236, 242)");
+  assert.equal(sheet.runColor, "rgb(0, 0, 0)");
+  assert.equal(sheet.runDisplayColor, "rgb(232, 236, 242)");
   assert.equal(sheet.sidebar, "rgb(23, 26, 33)");
   assert.equal(sheet.comment, "rgb(35, 42, 53)");
   assert.equal(sheet.imageFilter, "none");
   assert.equal(sheet.docsRules, false);
+  const fillToolbarColors = () => evaluate(`(() => {
+    const container = document.querySelector('.waffleMagicFillContainerWithAutofill');
+    const left = container.querySelector('.waffleMagicFillOverGridMagicButton');
+    const right = container.querySelector('.waffleMagicFillMagicFillAutofillButtonContainer');
+    return {
+      container: getComputedStyle(container).backgroundColor,
+      left: getComputedStyle(left).backgroundColor,
+      leftImage: getComputedStyle(left).backgroundImage,
+      leftText: getComputedStyle(left.querySelector('.waffleMagicFillMagicFillText')).color,
+      leftIcon: getComputedStyle(left.querySelector('path')).fill,
+      rightIcon: getComputedStyle(right.querySelector('path')).fill,
+      divider: getComputedStyle(container.querySelector('.waffleMagicFillAutofillDivider')).backgroundColor
+    };
+  })()`);
+  const darkFill = await fillToolbarColors();
+  assert.equal(darkFill.container, "rgb(35, 42, 53)");
+  assert.equal(darkFill.left, "rgba(0, 0, 0, 0)");
+  assert.equal(darkFill.leftText, "rgb(232, 236, 242)");
+  assert.equal(darkFill.leftIcon, "rgb(232, 236, 242)");
+  assert.equal(darkFill.rightIcon, "rgb(232, 236, 242)");
+  assert.equal(darkFill.divider, "rgb(75, 86, 103)");
+  const leftFillBounds = await evaluate(`(() => {
+    const rect = document.querySelector('.waffleMagicFillOverGridMagicButton').getBoundingClientRect();
+    return { x: rect.x + rect.width / 2, y: rect.y + rect.height / 2 };
+  })()`);
+  await send("Input.dispatchMouseEvent", { type: "mouseMoved", ...leftFillBounds });
+  const hoveredFill = await fillToolbarColors();
+  assert.equal(hoveredFill.left, "rgb(42, 48, 59)");
+  assert.equal(hoveredFill.leftImage, "none");
+  assert.equal(hoveredFill.leftText, darkFill.leftText);
+  assert.equal(hoveredFill.leftIcon, darkFill.leftIcon);
+  assert.equal(hoveredFill.rightIcon, darkFill.rightIcon);
+  await screenshot("gdt-sheets-fill-hover-verify.png");
+  await send("Input.dispatchMouseEvent", { type: "mouseMoved", x: 0, y: 0 });
+  const sheetRunSource = await evaluate("document.querySelector('#waffle-rich-text-editor span').getAttribute('style')");
+  await evaluate("document.querySelector('#waffle-rich-text-editor').focus()");
+  await send("Input.insertText", { text: " More text." });
+  const typedSheet = await evaluate(`(() => {
+    const editor = document.querySelector('#waffle-rich-text-editor');
+    return {
+      text: editor.textContent,
+      source: editor.getAttribute('style'),
+      runSource: editor.querySelector('span').getAttribute('style')
+    };
+  })()`);
+  assert.match(typedSheet.text, /More text\./);
+  assert.equal(typedSheet.source, sheet.source);
+  assert.equal(typedSheet.runSource, sheetRunSource);
   const fontMenu = await evaluate(`(() => {
     const menu = document.querySelector('.fixture-font-menu');
     return {
@@ -272,6 +396,24 @@ try {
   assert(fontMenu.scrollable);
   await screenshot("gdt-sheets-font-menu-verify.png");
 
+  await navigate("spreadsheets/extension-fixture.html", "?formula");
+  const formulaColors = await evaluate(`(() => {
+    const editor = document.querySelector('#waffle-rich-text-editor');
+    const reference = editor.querySelector('[style*="color:#e89100"]');
+    const ordinary = editor.querySelector('.default-formula-text-color');
+    return {
+      referenceSource: reference.getAttribute('style'),
+      referenceColor: getComputedStyle(reference).color,
+      referenceDisplayColor: getComputedStyle(reference).webkitTextFillColor,
+      ordinaryDisplayColor: getComputedStyle(ordinary).webkitTextFillColor
+    };
+  })()`);
+  assert.equal(formulaColors.referenceSource, "color:#e89100;");
+  assert.equal(formulaColors.referenceColor, "rgb(232, 145, 0)");
+  assert.equal(formulaColors.referenceDisplayColor, "rgb(232, 145, 0)");
+  assert.equal(formulaColors.ordinaryDisplayColor, "rgb(232, 236, 242)");
+  await screenshot("gdt-sheets-formula-verify.png");
+
   await send("Emulation.setEmulatedMedia", {
     features: [{ name: "prefers-color-scheme", value: "light" }]
   });
@@ -281,14 +423,27 @@ try {
     return {
       source: editor.getAttribute('style'),
       color: getComputedStyle(editor).color,
+      displayColor: getComputedStyle(editor).webkitTextFillColor,
       menu: getComputedStyle(document.querySelector('.fixture-font-menu')).backgroundColor,
       sidebar: getComputedStyle(document.querySelector('.docs-tiled-sidebar')).backgroundColor
     };
   })()`);
   assert.equal(lightSheet.source, sheet.source);
   assert.equal(lightSheet.color, "rgb(0, 0, 0)");
+  assert.equal(lightSheet.displayColor, "rgb(0, 0, 0)");
   assert.equal(lightSheet.menu, "rgb(255, 255, 255)");
   assert.equal(lightSheet.sidebar, "rgb(240, 244, 249)");
+  const lightFill = await fillToolbarColors();
+  assert.equal(lightFill.container, "rgb(248, 250, 253)");
+  assert.equal(lightFill.left, "rgb(248, 250, 253)");
+  assert.equal(lightFill.leftText, "rgb(31, 31, 31)");
+  assert.equal(lightFill.leftIcon, "rgb(31, 31, 31)");
+  assert.equal(lightFill.rightIcon, "rgb(31, 31, 31)");
+  assert.equal(lightFill.divider, "rgb(218, 218, 218)");
+  await send("Input.dispatchMouseEvent", { type: "mouseMoved", ...leftFillBounds });
+  const lightHoveredFill = await fillToolbarColors();
+  assert.match(lightHoveredFill.leftImage, /^linear-gradient\(/);
+  await send("Input.dispatchMouseEvent", { type: "mouseMoved", x: 0, y: 0 });
   await screenshot("gdt-sheets-light-verify.png");
 
   await send("Emulation.setEmulatedMedia", {

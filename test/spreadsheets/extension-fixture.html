@@ -37,6 +37,14 @@
       .waffle-formula-preview-decorator { position: absolute; z-index: 6; top: 242px; left: 288px; display: none; gap: 10px; padding: 7px 10px; background: #fff; border: 1px solid #dadce0; }
       .waffle-formula-preview-result { color: #1a73e8; }
       .waffle-formula-preview-close { color: #9aa0a6; }
+      .waffleMagicFillContainerWithAutofill { position: absolute; z-index: 7; top: 520px; left: 600px; display: inline-flex; align-items: center; gap: 2px; padding: 4px 2px 4px 1px; border-radius: 9999px; background: #f8fafd; }
+      .waffleMagicFillOverGridMagicButton { display: flex; align-items: center; height: 32px; padding: 4px; border-radius: 9999px; background: #f8fafd; color: #1f1f1f; cursor: pointer; }
+      .waffleMagicFillMagicFillButtonContainer { display: flex; align-items: center; gap: 5px; padding: 0 5px; }
+      .waffleMagicFillMagicFillButtonIcon { width: 18px; height: 18px; fill: #1f1f1f; }
+      .waffleMagicFillMagicFillText { font-weight: 500; }
+      .waffleMagicFillAutofillDivider { width: 1px; height: 24px; background: #dadada; }
+      .waffleMagicFillMagicFillAutofillButtonContainer { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 9999px; color: #1f1f1f; cursor: pointer; }
+      .waffleMagicFillOverGridMagicButton:hover, .waffleMagicFillOverGridMagicButton:focus, .waffleMagicFillMagicFillAutofillButtonContainer:hover, .waffleMagicFillMagicFillAutofillButtonContainer:focus { background: linear-gradient(90deg, #e9eef6, #bbe2ff, #d0d9ff); }
       #docs-titlebar-share-client-button { display: inline-flex; }
       #docs-titlebar-share-client-button > div { padding: 9px 14px; background: #c2e7ff; color: #004a77; }
       .scb-split-button { border-radius: 100px 0 0 100px; }
@@ -96,6 +104,18 @@
           <div id="waffle-rich-text-editor" class="cell-input editable" contenteditable="true" style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);"><span style="font-size:15px;color:#000000;">Answer this question truthfully</span></div>
         </div>
         <div class="waffle-formula-preview-decorator"><span class="waffle-formula-preview-result">903</span><span class="waffle-formula-preview-close waffle-formula-preview-button">&times;</span></div>
+        <div class="waffleMagicFillFillContainer waffleMagicFillContainerWithAutofill" role="toolbar" aria-label="Fill actions">
+          <div class="waffleMagicFillOverGridMagicButton" role="button" tabindex="0" aria-label="Fill with Gemini">
+            <div class="waffleMagicFillMagicFillButtonContainer">
+              <svg class="waffleMagicFillMagicFillButtonIcon" viewBox="0 0 18 18" aria-hidden="true"><path d="M12.5 2 16 5.5 6.5 15H3v-3.5L12.5 2Zm-8 10.1v1.4h1.4l7.3-7.3-1.4-1.4-7.3 7.3Z"/></svg>
+              <span class="waffleMagicFillMagicFillText">Fill</span>
+            </div>
+          </div>
+          <div class="waffleMagicFillAutofillDivider"></div>
+          <div class="waffleMagicFillMagicFillAutofillButtonContainer" role="button" tabindex="0" aria-label="Automatically fill cells">
+            <svg class="waffleMagicFillMagicFillButtonIcon" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 2h11v9H3V2Zm2 2v2h7V4H5Zm0 4v1h7V8H5Zm10 4 1.1 2.9L19 16l-2.9 1.1L15 20l-1.1-2.9L11 16l2.9-1.1L15 12Z"/></svg>
+          </div>
+        </div>
         <div class="sheet-tabs docs-sheet-container">
           <span>+</span><span class="docs-sheet-tab docs-sheet-active-tab">Quests</span><span class="docs-sheet-tab">Events</span><span class="docs-sheet-tab">Spells</span>
         </div>

@@ -230,7 +230,9 @@
       if (!adapted || adapted === current) {
         continue;
       }
-      declarations.push(`${property}: ${adapted} !important`);
+      // Paint text without changing the color Google Docs can use for editing.
+      const displayProperty = property === "color" ? "-webkit-text-fill-color" : property;
+      declarations.push(`${displayProperty}: ${adapted} !important`);
     }
 
     if (!declarations.length) {

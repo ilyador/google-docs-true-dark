@@ -169,6 +169,58 @@
         padding: 7px 8px;
       }
 
+      .goog-menuitem-disabled {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+      }
+
+      .docs-navigation-tab-button {
+        position: fixed;
+        top: 164px;
+        left: 8px;
+        display: grid;
+        place-items: center;
+        width: 36px;
+        height: 36px;
+        border: 0;
+        border-radius: 50%;
+        background: #e8eaed;
+      }
+
+      .fixture-nav-glyph {
+        display: block;
+        width: 20px;
+        height: 20px;
+        background: center / contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath fill='%235f6368' d='M3 4h14v2H3zm0 5h14v2H3zm0 5h14v2H3z'/%3E%3C/svg%3E");
+      }
+
+      .fixture-mini-chapter {
+        position: fixed;
+        top: 164px;
+        left: 8px;
+        display: grid;
+        place-items: center;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: var(--gm3-sys-color-surface-container-high, #e8eaed);
+      }
+
+      .fixture-mini-chapter .docs-icon {
+        width: 20px;
+        height: 20px;
+      }
+
+      .fixture-mini-chapter-glyph {
+        display: block;
+        width: 20px;
+        height: 20px;
+        background-color: #444746;
+        -webkit-mask: center / contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath fill='white' d='M3 4h14v2H3zm0 5h14v2H3zm0 5h14v2H3z'/%3E%3C/svg%3E");
+      }
+
       .fixture-underline,
       .fixture-strike {
         font-size: 24px;
@@ -211,10 +263,14 @@
     </div>
 
     <div class="goog-menu">
-      <div class="goog-menuitem goog-menuitem-highlight">Smart chips <span class="goog-submenu-arrow">&#9656;</span></div>
-      <div class="goog-menuitem">Image</div>
+      <div class="goog-menuitem goog-submenu goog-menuitem-highlight">Smart chips <span class="goog-submenu-arrow">&#9656;</span></div>
+      <div id="fixture-menu-normal" class="goog-menuitem" style="background: #f1f3f4;"><span class="goog-menuitem-content" style="background: #f1f3f4;"><span class="goog-menuitem-label">Image</span></span></div>
       <div class="goog-menuitem">Table <span class="goog-menuitem-accel">Ctrl+Alt+T</span></div>
+      <div id="fixture-menu-disabled" class="goog-menuitem goog-menuitem-disabled" aria-disabled="true"><span class="goog-menuitem-content"><span class="goog-menuitem-label" style="color: #202124; -webkit-text-fill-color: #202124;">Comment</span></span><span class="goog-menuitem-accel">Cmd+Option+M</span></div>
     </div>
+
+    <button class="docs-navigation-tab-button" aria-label="Legacy tabs &amp; outlines" style="left: -9999px;"><span class="docs-icon-img fixture-nav-glyph"></span></button>
+    <div class="fixture-mini-chapter" role="button" aria-label="Show tabs &amp; outlines"><span class="appsKixClientUiWizMiniChapterSwitcherSurfaceBreadcrumbIconContainer"><span class="docs-icon appsKixClientUiWizMiniChapterSwitcherSurfaceBreadcrumbIconAndLabel"><span class="docs-icon-img-container docs-icon-img docs-icon-masked-image docs-icon-list-20x20 fixture-mini-chapter-glyph"></span></span></span></div>
 
     <main class="workspace">
       <aside class="left-sidebar-container">
@@ -228,6 +284,7 @@
       <section id="docs-editor" class="kix-appview-editor">
         <article class="kix-page" style="background-color: #ffffff; color: #202124;">
           <p class="doc-line" style="color: #202124;">This is ordinary black document text. It should become readable on a dark page.</p>
+          <p id="editable-source" class="doc-line" contenteditable="true" style="color: #202124;">New text inherits black source formatting.</p>
           <p class="doc-line" style="color: #1155cc;">This blue link-like text should keep its hue while getting lighter.</p>
           <p class="doc-line" style="background-color: #fff2cc; color: #3c4043;">This pale yellow highlight should become a subdued dark highlight.</p>
           <p class="doc-line" style="border-left: 4px solid #dadce0; padding-left: 12px;">Light borders should become dark-mode dividers.</p>
